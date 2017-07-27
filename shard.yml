@@ -1,0 +1,9 @@
+name: inotify
+version: 0.1.0
+
+authors:
+  - Michael Petö <michael@petoe.me>
+
+crystal: 0.23.1
+
+license: MIT
