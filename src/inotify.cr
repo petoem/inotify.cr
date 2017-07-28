@@ -17,22 +17,28 @@ module Inotify
       @wd = LibInotify.add_watch(@fd, @path, LibInotify::IN_MODIFY | LibInotify::IN_CREATE | LibInotify::IN_DELETE)
       raise "inotify add_watch failed" if @wd == -1
 
-      puts "Hello"
       @on_event_callback = block
       spawn watch
       Fiber.yield
     end
 
     private def watch
+      pos = 0
         loop do |i|
           slice = Slice(UInt8).new(LibInotify::BUF_LEN)
           bytes_read = LibC.read(@fd, slice.pointer(slice.size).as(Void*), slice.size)
-          event_ptr = slice.pointer(slice.size).as(LibInotify::Event*)
 
-          slice_event_name = slice[16, event_ptr.value.len]
-          event_name = String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
+          while pos < bytes_read
+            sub_slice = slice + pos
+            event_ptr = sub_slice.pointer(sub_slice.size).as(LibInotify::Event*)
 
-          @on_event_callback.call(Event.new(event_name, File.join(@path, event_name), event_ptr.value.mask, event_ptr.value.cookie))
+            slice_event_name = sub_slice[16, event_ptr.value.len]
+            event_name = String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
+
+            @on_event_callback.call(Event.new(event_name, File.join(@path, event_name), event_ptr.value.mask, event_ptr.value.cookie))
+            pos += 16 + event_ptr.value.len
+          end
+          pos = 0
         end
     end
 
