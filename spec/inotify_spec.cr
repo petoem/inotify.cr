@@ -5,5 +5,10 @@ describe Inotify do
     Inotify::Watcher.new("./spec/test") do |event|
       pp event
     end
+
+    loop do
+      sleep 5
+      puts "PING"
+    end
   end
 end
