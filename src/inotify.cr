@@ -11,7 +11,7 @@ module Inotify
 
   class Watcher
     def initialize(@path : String, @poll_interval : UInt32 = 1_u32, &block : Event ->)
-      @fd = LibInotify.init1 LibC::O_NONBLOCK
+      @fd = LibInotify.init LibC::O_NONBLOCK
       raise "inotify init failed" if @fd < 0
       # puts "inotify init"
       # flags = LibC.fcntl(@fd, LibC::F_GETFL, 0)

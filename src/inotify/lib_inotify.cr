@@ -48,7 +48,7 @@ lib LibInotify
 
   alias Uint32T = LibC::UInt
   fun init = inotify_init : LibC::Int
-  fun init1 = inotify_init1(__flags : LibC::Int) : LibC::Int
+  fun init = inotify_init1(__flags : LibC::Int) : LibC::Int
   fun add_watch = inotify_add_watch(__fd : LibC::Int, __name : LibC::Char*, __mask : Uint32T) : LibC::Int
   fun rm_watch = inotify_rm_watch(__fd : LibC::Int, __wd : LibC::Int) : LibC::Int
 end
