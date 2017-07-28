@@ -1,6 +1,6 @@
 # inotify
 
-Inotify bindings for [Crystal language](https://github.com/crystal-lang/crystal)
+**[WIP]** Inotify bindings for [Crystal language](https://github.com/crystal-lang/crystal)
 
 ## Installation
 
@@ -16,9 +16,14 @@ dependencies:
 
 ```crystal
 require "inotify"
+
+Inotify::Watcher.new("./path/to/watch") do |event|
+  pp event
+end
 ```
 
-TODO: Write usage instructions here
+*Note: You have to run something in the main fiber or else your program will exit.* 
+
 
 ## Development
 
