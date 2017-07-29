@@ -1,6 +1,19 @@
 module Inotify
+  struct WatchInfo
+    getter wd : Int32
+    getter path : String
+    getter absolute_path : String
+    @is_dir : Bool
+
+    def initialize(@wd : Int32, @path : String, @is_dir : Bool)
+      @absolute_path = File.expand_path(@path)
+    end
+  end
+
   class Watcher
+    DEFAULT_WATCH_FLAG = LibInotify::IN_MOVE | LibInotify::IN_MOVE_SELF | LibInotify::IN_MODIFY | LibInotify::IN_CREATE | LibInotify::IN_DELETE | LibInotify::IN_DELETE_SELF
     @enabled : Bool = false
+    @watch_list = {} of LibC::Int => WatchInfo
 
     def initialize(@path : String, @poll_interval : UInt32 = 1_u32, &block : Event ->)
       @fd = LibInotify.init LibC::O_NONBLOCK
@@ -8,9 +21,7 @@ module Inotify
       @io = IO::FileDescriptor.new(@fd)
       LOG.debug "inotify init"
 
-      @wd = LibInotify.add_watch(@fd, @path, LibInotify::IN_MODIFY | LibInotify::IN_CREATE | LibInotify::IN_DELETE)
-      raise "inotify add_watch failed" if @wd == -1
-      LOG.debug "inotify add_watch"
+      watch @path
 
       @event_channel = Channel(Event).new
       @on_event_callback = block
@@ -21,7 +32,7 @@ module Inotify
     def enable
       unless @enabled
         @enabled = true
-        spawn watch
+        spawn lurk
       end
     end
 
@@ -29,7 +40,7 @@ module Inotify
       @enabled = false
     end
 
-    private def watch
+    private def lurk
       pos = 0
       while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
@@ -45,7 +56,7 @@ module Inotify
             slice_event_name = sub_slice[16, event_ptr.value.len]
             event_name = String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
 
-            event = Event.new(event_name, File.join(@path, event_name), event_ptr.value.mask, event_ptr.value.cookie)
+            event = Event.new(event_name, @watch_list[event_ptr.value.wd].absolute_path, event_ptr.value.mask, event_ptr.value.cookie)
             @event_channel.send event
             pos += 16 + event_ptr.value.len
           end
@@ -60,12 +71,31 @@ module Inotify
       end
     end
 
+    private def watch(path : String)
+      if File.directory? path
+        wd = LibInotify.add_watch(@fd, path, DEFAULT_WATCH_FLAG)
+        raise "inotify add_watch failed" if wd == -1
+        LOG.debug "inotify add_watch directory #{wd} #{path}"
+        @watch_list[wd] = WatchInfo.new(wd, path, true)
+        unless Dir.empty? path
+          Dir.foreach(path) { |child| watch(File.join(path, child)) unless child == "." || child == ".." }
+        end
+      end
+      if File.file? path
+        wd = LibInotify.add_watch(@fd, path, DEFAULT_WATCH_FLAG)
+        raise "inotify add_watch failed" if wd == -1
+        LOG.debug "inotify add_watch file #{wd} #{path}"
+        @watch_list[wd] = WatchInfo.new(wd, path, false)
+      end
+    end
+
     private def unwatch
-      LibInotify.rm_watch(@fd, @wd)
+      @watch_list.each_key do |key|
+        LibInotify.rm_watch(@fd, key)
+      end
     end
 
     def finalize
-      LibInotify.rm_watch(@fd, @wd)
       @io.close
     end
   end
