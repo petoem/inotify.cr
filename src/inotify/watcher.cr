@@ -8,6 +8,10 @@ module Inotify
     def initialize(@wd : Int32, @path : String, @is_dir : Bool)
       @absolute_path = File.expand_path(@path)
     end
+
+    def isDir?
+      @is_dir
+    end
   end
 
   class Watcher
@@ -56,7 +60,10 @@ module Inotify
             slice_event_name = sub_slice[16, event_ptr.value.len]
             event_name = String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
 
-            event = Event.new(event_name, @watch_list[event_ptr.value.wd].absolute_path, event_ptr.value.mask, event_ptr.value.cookie)
+            wl = @watch_list[event_ptr.value.wd]
+            event_name = File.basename(wl.absolute_path) unless wl.isDir?
+            event = Event.new(event_name, wl.absolute_path, event_ptr.value.mask, event_ptr.value.cookie)
+
             @event_channel.send event
             pos += 16 + event_ptr.value.len
           end
