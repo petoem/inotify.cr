@@ -91,8 +91,12 @@ module Inotify
 
     private def unwatch
       @watch_list.each_key do |key|
-        LibInotify.rm_watch(@fd, key)
+        unwatch key
       end
+    end
+
+    private def unwatch(wd : LibC::Int)
+      LibInotify.rm_watch(@fd, wd)
     end
 
     def finalize
