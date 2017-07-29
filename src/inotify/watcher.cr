@@ -15,7 +15,7 @@ module Inotify
     @enabled : Bool = false
     @watch_list = {} of LibC::Int => WatchInfo
 
-    def initialize(@path : String, @poll_interval : UInt32 = 1_u32, &block : Event ->)
+    def initialize(@path : String, @recursive : Bool = false, &block : Event ->)
       @fd = LibInotify.init LibC::O_NONBLOCK
       raise "inotify init failed" if @fd < 0
       @io = IO::FileDescriptor.new(@fd)
@@ -77,7 +77,7 @@ module Inotify
         raise "inotify add_watch failed" if wd == -1
         LOG.debug "inotify add_watch directory #{wd} #{path}"
         @watch_list[wd] = WatchInfo.new(wd, path, true)
-        unless Dir.empty? path
+        unless Dir.empty?(path) || !@recursive
           Dir.foreach(path) { |child| watch(File.join(path, child)) unless child == "." || child == ".." }
         end
       end
