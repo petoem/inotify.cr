@@ -1,5 +1,7 @@
 module Inotify
   class Watcher
+    @enabled : Bool = false
+
     def initialize(@path : String, @poll_interval : UInt32 = 1_u32, &block : Event ->)
       @fd = LibInotify.init LibC::O_NONBLOCK
       raise "inotify init failed" if @fd < 0
@@ -12,13 +14,23 @@ module Inotify
       # puts "inotify add_watch"
 
       @on_event_callback = block
-      spawn watch
-      Fiber.yield
+      enable
+    end
+
+    def enable
+      unless @enabled
+        @enabled = true
+        spawn watch
+      end
+    end
+
+    def disable
+      @enabled = false
     end
 
     private def watch
       pos = 0
-      loop do |i|
+      while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
         bytes_read = LibC.read(@fd, slice.pointer(slice.size).as(Void*), slice.size)
         if bytes_read > 0
@@ -36,6 +48,10 @@ module Inotify
         end
         sleep @poll_interval
       end
+    end
+
+    private def unwatch
+      LibInotify.rm_watch(@fd, @wd)
     end
 
     def finalize
