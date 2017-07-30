@@ -56,13 +56,21 @@ module Inotify
           while pos < bytes_read
             sub_slice = slice + pos
             event_ptr = sub_slice.pointer(sub_slice.size).as(LibInotify::Event*)
-
+            # Read LibInotify::Event.name
             slice_event_name = sub_slice[16, event_ptr.value.len]
             event_name = String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
-
+            # Fix empty event_name when file is being watched
             wl = @watch_list[event_ptr.value.wd]
             event_name = File.basename(wl.absolute_path) unless wl.isDir?
-            event = Event.new(event_name, wl.absolute_path, event_ptr.value.mask, event_ptr.value.cookie)
+
+            triggerer_is_dir = 0 != event_ptr.value.mask & LibInotify::IN_ISDIR
+            # Build final event object
+            event = Event.new(event_name,
+              wl.absolute_path,
+              event_ptr.value.mask,
+              event_ptr.value.cookie,
+              triggerer_is_dir,
+              EventType.parse_mask(event_ptr.value.mask))
 
             @event_channel.send event
             pos += 16 + event_ptr.value.len
