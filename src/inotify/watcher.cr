@@ -9,13 +9,12 @@ module Inotify
       @absolute_path = File.expand_path(@path)
     end
 
-    def isDir?
+    def directory?
       @is_dir
     end
   end
 
   class Watcher
-    DEFAULT_WATCH_FLAG = LibInotify::IN_MOVE | LibInotify::IN_MOVE_SELF | LibInotify::IN_MODIFY | LibInotify::IN_CREATE | LibInotify::IN_DELETE | LibInotify::IN_DELETE_SELF
     @enabled : Bool = false
     @watch_list = {} of LibC::Int => WatchInfo
 
@@ -25,7 +24,13 @@ module Inotify
       @io = IO::FileDescriptor.new(@fd)
       LOG.debug "inotify init"
 
-      watch @path
+      if File.file? @path
+        wd = LibInotify.add_watch(@fd, @path, DEFAULT_WATCH_FLAG)
+        raise "inotify add_watch failed" if wd == -1
+        LOG.debug "inotify add_watch file #{wd} #{path}"
+        @watch_list[wd] = WatchInfo.new(wd, @path, false)
+      end
+      watch @path if File.directory?(@path)
 
       @event_channel = Channel(Event).new
       @on_event_callback = block
@@ -61,20 +66,21 @@ module Inotify
             event_name = String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
             # Fix empty event_name when file is being watched
             wl = @watch_list[event_ptr.value.wd]
-            event_name = File.basename(wl.absolute_path) unless wl.isDir?
+            event_name = File.basename(wl.absolute_path) unless wl.directory?
 
             triggerer_is_dir = 0 != event_ptr.value.mask & LibInotify::IN_ISDIR
             event_type = EventType.parse_mask(event_ptr.value.mask)
             # Build final event object
             event = Event.new(event_name,
-              wl.absolute_path,
+              wl.path,
               event_ptr.value.mask,
               event_ptr.value.cookie,
               triggerer_is_dir,
               event_type)
-            
+
             @event_channel.send event
-            watch File.join(event.path, event.name) if event.isDir? && event.event_type.create? && @recursive
+            watch File.join(event.path, event.name) if event.directory? && event.event_type.create? && @recursive
+            # unwatch event_ptr.value.wd if event.event_type.delete_self?
             pos += 16 + event_ptr.value.len
           end
           pos = 0
@@ -89,20 +95,12 @@ module Inotify
     end
 
     private def watch(path : String)
-      if File.directory? path
-        wd = LibInotify.add_watch(@fd, path, DEFAULT_WATCH_FLAG)
-        raise "inotify add_watch failed" if wd == -1
-        LOG.debug "inotify add_watch directory #{wd} #{path}"
-        @watch_list[wd] = WatchInfo.new(wd, path, true)
-        unless Dir.empty?(path) || !@recursive
-          Dir.foreach(path) { |child| watch(File.join(path, child)) unless child == "." || child == ".." }
-        end
-      end
-      if File.file? path
-        wd = LibInotify.add_watch(@fd, path, DEFAULT_WATCH_FLAG)
-        raise "inotify add_watch failed" if wd == -1
-        LOG.debug "inotify add_watch file #{wd} #{path}"
-        @watch_list[wd] = WatchInfo.new(wd, path, false)
+      wd = LibInotify.add_watch(@fd, path, DEFAULT_WATCH_FLAG)
+      raise "inotify add_watch failed" if wd == -1
+      LOG.debug "inotify add_watch directory #{wd} #{path}"
+      @watch_list[wd] = WatchInfo.new(wd, path, true)
+      unless Dir.empty?(path) || !@recursive
+        Dir.foreach(path) { |child| watch(File.join(path, child)) if child != "." && child != ".." && File.directory?(File.join(path, child)) }
       end
     end
 
@@ -114,6 +112,7 @@ module Inotify
 
     private def unwatch(wd : LibC::Int)
       LibInotify.rm_watch(@fd, wd)
+      @watch_list.delete wd
     end
 
     def finalize
