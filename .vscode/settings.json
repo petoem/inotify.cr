@@ -1,0 +1,11 @@
+{
+    "crystal-lang.problems": "build",
+    "crystal-lang.implementations": true,
+    "crystal-lang.hover": true,
+    "crystal-lang.completion": true,
+    "crystal-lang.mainFile": "${workspaceRoot}/src/inotify.cr",
+    "crystal-lang.maxNumberOfProblems": 100,
+    "crystal-lang.processesLimit": 3,
+    "crystal-lang.compiler": "/usr/bin/crystal",
+    "crystal-lang.server": "/usr/bin/scry"
+}
