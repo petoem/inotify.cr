@@ -1,8 +1,19 @@
-require "./inotify/*"
+require "./inotify/version"
+require "./inotify/event"
+require "./inotify/fallback"
+require "./inotify/settings"
+
+{% if flag?(:linux) %}
+  require "./inotify/lib_inotify"
+  require "./inotify/watcher"
+{% else %}
+  module Inotify
+    alias Watcher = Fallback
+  end
+{% end %}
 
 module Inotify
   def self.watch(path : String, recursive : Bool = false, &block : Event ->)
-    # TODO: check if platform is linux
     Watcher.new(path, recursive, &block)
   end
 end
