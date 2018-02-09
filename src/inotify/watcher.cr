@@ -100,7 +100,7 @@ module Inotify
       LOG.debug "inotify add_watch directory #{wd} #{path}"
       @watch_list[wd] = WatchInfo.new(wd, path, true)
       unless Dir.empty?(path) || !@recursive
-        Dir.foreach(path) { |child| watch(File.join(path, child)) if child != "." && child != ".." && File.directory?(File.join(path, child)) }
+        Dir.each_child(path) { |child| watch(File.join(path, child)) if File.directory?(File.join(path, child)) }
       end
     end
 
