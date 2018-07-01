@@ -1,6 +1,6 @@
 module Inotify
   class Fallback
-    @file_index : Hash(String, File::Stat)
+    @file_index : Hash(String, File::Info)
 
     def initialize(@path : String, @recursive : Bool = false, &block : Event ->)
       LOG.debug "using fallback"
@@ -59,7 +59,7 @@ module Inotify
         # Check for modify event
         index_list = index.keys & @file_index.keys
         index_list.each do |child|
-          if index[child].mtime.to_s("%Y%m%d%H%M%S") != @file_index[child].mtime.to_s("%Y%m%d%H%M%S")
+          if index[child].modification_time.to_s("%Y%m%d%H%M%S") != @file_index[child].modification_time.to_s("%Y%m%d%H%M%S")
             is_dir = index[child].directory?
             event_name = child
             event_name = File.basename(child) unless is_dir
@@ -86,9 +86,9 @@ module Inotify
 
     private def create_index
       LOG.debug "fallback create index"
-      index = {} of String => File::Stat
+      index = {} of String => File::Info
       Dir.glob @path do |child|
-        index[child] = File.stat(child)
+        index[child] = File.info(child)
         LOG.debug "fallback found #{child}"
       end
       index

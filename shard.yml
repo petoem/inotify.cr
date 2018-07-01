@@ -4,6 +4,6 @@ version: 0.1.0
 authors:
   - Michael Petö <michael@petoe.me>
 
-crystal: 0.24.1
+crystal: 0.25.1
 
 license: MIT
