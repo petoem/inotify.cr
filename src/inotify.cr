@@ -31,7 +31,7 @@ end
 
 class File
   def self.watch(path : String, &block : Inotify::Event ->) : Inotify::Watcher
-    inotify = Inotify.watch
+    inotify = Inotify.watcher
     inotify.on_event &block
     inotify.watch path
     inotify
@@ -44,7 +44,7 @@ end
 
 class Dir
   def self.watch(path : String, recursive : Bool = false, &block : Inotify::Event ->) : Inotify::Watcher
-    inotify = Inotify.watch recursive
+    inotify = Inotify.watcher recursive
     inotify.on_event &block
     inotify.watch path
     inotify
