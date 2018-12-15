@@ -1,5 +1,7 @@
 name: inotify
 version: 0.1.0
+description: |
+  Inotify bindings for Crystal language
 
 authors:
   - Michael Petö <michael@petoe.me>
