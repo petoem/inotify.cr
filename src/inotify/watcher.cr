@@ -62,7 +62,7 @@ module Inotify
             event_name = File.basename(wl.absolute_path) unless wl.directory?
 
             triggerer_is_dir = 0 != event_ptr.value.mask & LibInotify::IN_ISDIR
-            event_type = EventType.parse_mask(event_ptr.value.mask)
+            event_type = Event::Type.parse_mask(event_ptr.value.mask)
             # Build final event object
             event = Event.new(event_name,
               wl.path,
@@ -72,7 +72,7 @@ module Inotify
               event_type)
 
             @event_channel.send event
-            watch File.join(event.path, event.name) if event.directory? && event.event_type.create? && @recursive
+            watch File.join(event.path, event.name) if event.directory? && event.type.create? && @recursive
             # Watch was removed
             @watch_list.delete event_ptr.value.wd if 0 != event_ptr.value.mask & LibInotify::IN_IGNORED
             pos += 16 + event_ptr.value.len
