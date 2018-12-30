@@ -62,14 +62,12 @@ module Inotify
             event_name = File.basename(wl.absolute_path) unless wl.directory?
 
             triggerer_is_dir = 0 != event_ptr.value.mask & LibInotify::IN_ISDIR
-            event_type = Event::Type.parse_mask(event_ptr.value.mask)
             # Build final event object
             event = Event.new(event_name,
               wl.path,
               event_ptr.value.mask,
               event_ptr.value.cookie,
-              triggerer_is_dir,
-              event_type)
+              triggerer_is_dir)
 
             @event_channel.send event
             watch File.join(event.path, event.name) if event.directory? && event.type.create? && @recursive

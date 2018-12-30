@@ -9,27 +9,42 @@ module Inotify
       @is_dir
     end
 
-    def initialize(@name : String, @path : String, @mask : UInt32, @cookie : UInt32, @is_dir : Bool, @type : Type)
+    def type_is?(bits)
+      bits & @mask != 0
     end
 
+    def initialize(@name : String, @path : String, @mask : UInt32, @cookie : UInt32, @is_dir : Bool)
+      @type = Type.parse @mask
+    end
+
+    @[Flags]
     enum Type
-      CREATE
+      UNKNOWN = 0
+      ACCESS
       MODIFY
-      MOVE
-      MOVE_SELF
+      ATTRIB
+      CLOSE_WRITE
+      CLOSE_NOWRITE
+      OPEN
+      MOVED_FROM
+      MOVED_TO
+      CREATE
       DELETE
       DELETE_SELF
-      UNKNOWN
+      MOVE_SELF
+      CLOSE = (CLOSE_WRITE | CLOSE_NOWRITE)
+      MOVE = (MOVED_FROM | MOVED_TO)
+      
+      def self.parse(mask : UInt32) : self
+        Type.each do |member, bits|
+          return member if bits & mask != 0
+        end
+        Type::UNKNOWN
+      end
 
-      def self.parse_mask(mask : UInt32) : Type
-        event = Type::UNKNOWN
-        event = Type::MODIFY if LibInotify::IN_MODIFY & mask != 0
-        event = Type::MOVE if LibInotify::IN_MOVE & mask != 0
-        event = Type::CREATE if LibInotify::IN_CREATE & mask != 0
-        event = Type::DELETE if LibInotify::IN_DELETE & mask != 0
-        event = Type::DELETE_SELF if LibInotify::IN_DELETE_SELF & mask != 0
-        event = Type::MOVE_SELF if LibInotify::IN_MOVE_SELF & mask != 0
-        event
+      # Patch that `Type::UNKNOWN.unknown?` returns `false` because `@[Flags]` attribute creates `None` member with value `0`.
+      def unknown?
+        self == Type::UNKNOWN
       end
     end
   end
