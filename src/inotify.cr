@@ -1,6 +1,5 @@
 require "./inotify/version"
 require "./inotify/event"
-require "./inotify/fallback"
 
 {% skip_file unless flag?(:linux) %}
 
