@@ -1,20 +1,12 @@
 require "./inotify/version"
 require "./inotify/event"
 require "./inotify/fallback"
-require "./inotify/settings"
 
-{% if flag?(:linux) %}
-  require "./inotify/lib_inotify"
-  require "./inotify/watcher"
-{% else %}
-  # module Inotify
-  #   alias Watcher = Fallback
-  # end
-  
-  # For now only linux
-  # TODO: Rework inotify fallback
-  {{ raise "Inotify is only available on linux platform" }}
-{% end %}
+{% skip_file unless flag?(:linux) %}
+
+require "./inotify/lib_inotify"
+require "./inotify/settings"
+require "./inotify/watcher"
 
 module Inotify
   def self.watcher(recursive : Bool = false) : Inotify::Watcher
