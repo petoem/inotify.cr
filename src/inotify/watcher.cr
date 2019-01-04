@@ -74,18 +74,16 @@ module Inotify
             wl = @watch_list[event_ptr.value.wd]
             event_name = File.basename(wl.absolute_path) unless wl.directory?
 
-            triggerer_is_dir = 0 != event_ptr.value.mask & LibInotify::IN_ISDIR
             # Build final event object
             event = Event.new(event_name,
               wl.path,
               event_ptr.value.mask,
-              event_ptr.value.cookie,
-              triggerer_is_dir)
+              event_ptr.value.cookie)
 
             @event_channel.send event
             watch File.join(event.path, event.name) if event.directory? && event.type.create? && @recursive
             # Watch was removed
-            @watch_list.delete event_ptr.value.wd if 0 != event_ptr.value.mask & LibInotify::IN_IGNORED
+            @watch_list.delete event_ptr.value.wd if event.type.ignored?
             pos += 16 + event_ptr.value.len
           end
           pos = 0
@@ -139,7 +137,7 @@ module Inotify
       status = LibInotify.rm_watch(@fd.not_nil!, wd)
       if status == -1
         case Errno.value
-        when Errno::EBADF then raise IO::Error.new "fd is not a valid file descriptor"
+        when Errno::EBADF  then raise IO::Error.new "fd is not a valid file descriptor"
         when Errno::EINVAL then raise Errno.new "The watch descriptor wd is not valid; or fd is not an inotify file descriptor"
         else
           raise Errno.new "inotify rm_watch failed"

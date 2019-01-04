@@ -1,10 +1,10 @@
 require "./inotify/version"
-require "./inotify/event"
 
 {% skip_file unless flag?(:linux) %}
 
 require "./inotify/lib_inotify"
 require "./inotify/settings"
+require "./inotify/event"
 require "./inotify/watcher"
 
 module Inotify
