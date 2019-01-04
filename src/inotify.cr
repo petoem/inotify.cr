@@ -19,29 +19,3 @@ module Inotify
     inotify
   end
 end
-
-class File
-  def self.watch(path : String, &block : Inotify::Event ->) : Inotify::Watcher
-    inotify = Inotify.watcher
-    inotify.on_event &block
-    inotify.watch path
-    inotify
-  end
-
-  def watch(&block : Inotify::Event ->) : Inotify::Watcher
-    File.watch @path, &block
-  end
-end
-
-class Dir
-  def self.watch(path : String, recursive : Bool = false, &block : Inotify::Event ->) : Inotify::Watcher
-    inotify = Inotify.watcher recursive
-    inotify.on_event &block
-    inotify.watch path
-    inotify
-  end
-
-  def watch(recursive : Bool = false, &block : Inotify::Event ->) : Inotify::Watcher
-    Dir.watch @path, recursive, &block
-  end
-end
