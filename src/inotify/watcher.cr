@@ -3,9 +3,10 @@ module Inotify
     getter wd : Int32
     getter path : String
     getter absolute_path : String
+    getter mask : Int32
     @is_dir : Bool
 
-    def initialize(@wd : Int32, @path : String, @is_dir : Bool)
+    def initialize(@wd : Int32, @path : String, @is_dir : Bool, @mask : Int32)
       @absolute_path = File.expand_path(@path)
     end
 
@@ -20,12 +21,6 @@ module Inotify
     @event_callbacks = [] of Proc(Event, Nil)
 
     def initialize(@recursive : Bool = false)
-      @fd = LibInotify.init LibC::O_NONBLOCK
-      raise Errno.new "inotify init failed" if @fd == -1
-      LOG.debug "inotify init"
-      @io = IO::FileDescriptor.new(@fd)
-      LOG.debug "inotify IO created"
-
       @event_channel = Channel(Event).new
       wait_for_event
       enable
@@ -34,12 +29,30 @@ module Inotify
     def enable
       unless @enabled
         @enabled = true
+        inotify_init
         spawn lurk
+        resume_watch
       end
     end
 
     def disable
       @enabled = false
+      @io.not_nil!.close
+    end
+
+    private def inotify_init
+      @fd = LibInotify.init LibC::O_NONBLOCK
+      raise Errno.new "inotify init failed" if @fd == -1
+      LOG.debug "inotify init"
+      @io = IO::FileDescriptor.new @fd.not_nil!
+      LOG.debug "inotify IO created"
+    end
+
+    # Resume all previously watched paths.
+    private def resume_watch
+      @watch_list.each_value do |watch_info|
+        watch watch_info.path, watch_info.mask
+      end
     end
 
     private def lurk
@@ -47,7 +60,7 @@ module Inotify
       while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
         LOG.debug "waiting for event data"
-        bytes_read = @io.read(slice)
+        bytes_read = @io.not_nil!.read(slice)
         raise "inotify read() failed" if bytes_read == 0
         LOG.debug "received event data"
         if bytes_read > 0
@@ -78,6 +91,12 @@ module Inotify
           pos = 0
         end
       end
+    rescue ex : Errno
+      if @enabled
+        raise ex
+      elsif ex.errno != Errno::EBADF
+        raise ex
+      end
     end
 
     private def wait_for_event
@@ -97,16 +116,16 @@ module Inotify
     end
 
     def watch(path : String, mask = DEFAULT_WATCH_FLAG)
-      wd = LibInotify.add_watch(@fd, path, mask)
+      wd = LibInotify.add_watch(@fd.not_nil!, path, mask)
       raise Errno.new "inotify add_watch failed" if wd == -1
       LOG.debug "inotify add_watch #{wd} #{path}"
       if is_dir = File.directory? path
-        @watch_list[wd] = WatchInfo.new wd, path, is_dir
+        @watch_list[wd] = WatchInfo.new wd, path, is_dir, mask
         unless Dir.empty?(path) || !@recursive
           Dir.each_child(path) { |child| watch(File.join(path, child)) if File.directory?(File.join(path, child)) }
         end
       else
-        @watch_list[wd] = WatchInfo.new wd, path, false
+        @watch_list[wd] = WatchInfo.new wd, path, false, mask
       end
     end
 
@@ -117,7 +136,7 @@ module Inotify
     end
 
     def unwatch(wd : LibC::Int)
-      status = LibInotify.rm_watch(@fd, wd)
+      status = LibInotify.rm_watch(@fd.not_nil!, wd)
       if status == -1
         case Errno.value
         when Errno::EBADF then raise IO::Error.new "fd is not a valid file descriptor"
@@ -129,7 +148,7 @@ module Inotify
     end
 
     def finalize
-      @io.close
+      @io.not_nil!.close
     end
   end
 end
