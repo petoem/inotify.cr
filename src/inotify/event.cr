@@ -2,35 +2,46 @@ module Inotify
   struct Event
     property name, path : String
     property mask, cookie : UInt32
-    property event_type : EventType
-    @is_dir : Bool
+    property type : Type
 
     def directory?
-      @is_dir
+      type_is? LibInotify::IN_ISDIR
     end
 
-    def initialize(@name : String, @path : String, @mask : UInt32, @cookie : UInt32, @is_dir : Bool, @event_type : EventType)
+    def type_is?(bits)
+      bits & @mask != 0
     end
-  end
 
-  enum EventType
-    CREATE
-    MODIFY
-    MOVE
-    MOVE_SELF
-    DELETE
-    DELETE_SELF
-    UNKNOWN
+    def initialize(@name : String, @path : String, @mask : UInt32, @cookie : UInt32)
+      @type = Type.parse @mask
+    end
 
-    def self.parse_mask(mask : UInt32) : EventType
-      event = EventType::UNKNOWN
-      event = EventType::MODIFY if LibInotify::IN_MODIFY & mask != 0
-      event = EventType::MOVE if LibInotify::IN_MOVE & mask != 0
-      event = EventType::CREATE if LibInotify::IN_CREATE & mask != 0
-      event = EventType::DELETE if LibInotify::IN_DELETE & mask != 0
-      event = EventType::DELETE_SELF if LibInotify::IN_DELETE_SELF & mask != 0
-      event = EventType::MOVE_SELF if LibInotify::IN_MOVE_SELF & mask != 0
-      event
+    enum Type
+      UNKNOWN       = 0x00000000
+      ACCESS        = LibInotify::IN_ACCESS
+      MODIFY        = LibInotify::IN_MODIFY
+      ATTRIB        = LibInotify::IN_ATTRIB
+      CLOSE_WRITE   = LibInotify::IN_CLOSE_WRITE
+      CLOSE_NOWRITE = LibInotify::IN_CLOSE_NOWRITE
+      OPEN          = LibInotify::IN_OPEN
+      MOVED_FROM    = LibInotify::IN_MOVED_FROM
+      MOVED_TO      = LibInotify::IN_MOVED_TO
+      CREATE        = LibInotify::IN_CREATE
+      DELETE        = LibInotify::IN_DELETE
+      DELETE_SELF   = LibInotify::IN_DELETE_SELF
+      MOVE_SELF     = LibInotify::IN_MOVE_SELF
+      CLOSE         = LibInotify::IN_CLOSE
+      MOVE          = LibInotify::IN_MOVE
+      UNMOUNT       = LibInotify::IN_UNMOUNT
+      Q_OVERFLOW    = LibInotify::IN_Q_OVERFLOW
+      IGNORED       = LibInotify::IN_IGNORED
+
+      def self.parse(mask : UInt32) : self
+        Type.each do |member, bits|
+          return member if bits & mask != 0
+        end
+        Type::UNKNOWN
+      end
     end
   end
 end

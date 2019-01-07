@@ -1,31 +1,21 @@
 require "./inotify/version"
-require "./inotify/event"
-require "./inotify/fallback"
-require "./inotify/settings"
 
-{% if flag?(:linux) %}
-  require "./inotify/lib_inotify"
-  require "./inotify/watcher"
-{% else %}
-  module Inotify
-    alias Watcher = Fallback
-  end
-{% end %}
+{% skip_file unless flag?(:linux) %}
+
+require "./inotify/lib_inotify"
+require "./inotify/settings"
+require "./inotify/event"
+require "./inotify/watcher"
 
 module Inotify
-  def self.watch(path : String, recursive : Bool = false, &block : Event ->)
-    Watcher.new(path, recursive, &block)
+  def self.watcher(recursive : Bool = false) : Inotify::Watcher
+    Watcher.new(recursive)
   end
-end
 
-class File
-  def self.watch(path : String, &block : Inotify::Event ->)
-    Inotify.watch(path, false, &block)
-  end
-end
-
-class Dir
-  def self.watch(path : String, recursive : Bool = false, &block : Inotify::Event ->)
-    Inotify.watch(path, recursive, &block)
+  def self.watch(path : String, recursive : Bool = false, &block : Inotify::Event ->) : Inotify::Watcher
+    inotify = Inotify.watcher recursive
+    inotify.on_event &block
+    inotify.watch path
+    inotify
   end
 end
