@@ -2,6 +2,10 @@
 
 Inotify bindings for [Crystal language](https://github.com/crystal-lang/crystal).
 
+[![GitHub release](https://img.shields.io/github/release/petoem/inotify.cr.svg?style=flat-square)](https://github.com/petoem/inotify.cr/releases)
+[![Travis](https://img.shields.io/travis/petoem/inotify.cr.svg?style=flat-square)](https://travis-ci.org/petoem/inotify.cr)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/petoem/inotify.cr/blob/master/LICENSE)
+
 ## Installation
 
 Add this to your application's `shard.yml`:
