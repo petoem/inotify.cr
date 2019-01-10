@@ -1,5 +1,5 @@
 module Inotify
-  struct WatchInfo
+  private struct WatchInfo
     getter wd : Int32
     getter path : String
     getter absolute_path : String
@@ -20,39 +20,19 @@ module Inotify
     @watch_list = {} of LibC::Int => WatchInfo
     @event_callbacks = [] of Proc(Event, Nil)
 
+    # Creates a new inotify instance and starts reading from the event queue.
+    # Optional: Set *recursive* to `true` to automatically watch all new subdirectories.
     def initialize(@recursive : Bool = false)
-      @event_channel = Channel(Event).new
-      wait_for_event
-      enable
-    end
-
-    def enable
-      unless @enabled
-        @enabled = true
-        inotify_init
-        spawn lurk
-        resume_watch
-      end
-    end
-
-    def disable
-      @enabled = false
-      @io.not_nil!.close
-    end
-
-    private def inotify_init
-      @fd = LibInotify.init LibC::O_NONBLOCK
-      raise Errno.new "inotify init failed" if @fd == -1
+      fd = LibInotify.init LibC::O_NONBLOCK
+      raise Errno.new "inotify init failed" if fd == -1
       LOG.debug "inotify init"
-      @io = IO::FileDescriptor.new @fd.not_nil!
+      @io = IO::FileDescriptor.new fd
       LOG.debug "inotify IO created"
-    end
 
-    # Resume all previously watched paths.
-    private def resume_watch
-      @watch_list.each_value do |watch_info|
-        watch watch_info.path, watch_info.mask
-      end
+      @event_channel = Channel(Event).new
+      @enabled = true
+      wait_for_event
+      spawn lurk
     end
 
     private def lurk
@@ -60,30 +40,37 @@ module Inotify
       while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
         LOG.debug "waiting for event data"
-        bytes_read = @io.not_nil!.read(slice)
-        raise "inotify read() failed" if bytes_read == 0
+        bytes_read = @io.read(slice)
+        raise Errno.new "inotify read() failed" if bytes_read == -1
         LOG.debug "received event data"
         if bytes_read > 0
           while pos < bytes_read
             sub_slice = slice + pos
             event_ptr = sub_slice.pointer(sub_slice.size).as(LibInotify::Event*)
             # Read LibInotify::Event.name
-            slice_event_name = sub_slice[16, event_ptr.value.len]
-            event_name = String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
-            # Fix empty event_name when file is being watched
-            wl = @watch_list[event_ptr.value.wd]
-            event_name = File.basename(wl.absolute_path) unless wl.directory?
-
+            event_name = if event_ptr.value.len != 0
+                           slice_event_name = sub_slice[16, event_ptr.value.len]
+                           String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
+                         else
+                           nil
+                         end
+            # Handle edge case where watch descriptor is not known
+            wl = @watch_list[event_ptr.value.wd]?
             # Build final event object
             event = Event.new(event_name,
-              wl.path,
+              wl.try &.path,
               event_ptr.value.mask,
-              event_ptr.value.cookie)
+              event_ptr.value.cookie,
+              event_ptr.value.wd)
 
-            @event_channel.send event
-            watch File.join(event.path, event.name) if event.directory? && event.type.create? && @recursive
+            # Watch new subdirectories (`event.name` can not be `nil` if `event.directory?`)
+            if (name = event.name) && (path = event.path) && event.directory? && event.type.create? && @recursive
+              watch File.join(path, name)
+            end
             # Watch was removed
             @watch_list.delete event_ptr.value.wd if event.type.ignored?
+            # Finally send out the event
+            @event_channel.send event
             pos += 16 + event_ptr.value.len
           end
           pos = 0
@@ -108,17 +95,27 @@ module Inotify
       end
     end
 
-    # TODO: block with no event argument ????
+    # Attach a `&block` to the instance, this will receive all events.
     def on_event(&block : Event ->)
       @event_callbacks.push block
+      nil
     end
 
+    # Removes all event handlers added with `#on_event`.
+    def clear_event_handlers
+      @event_callbacks.clear
+      nil
+    end
+
+    # Adds a new watch, or modifies an existing watch, for the *path* specified.
+    # Optional: The events to be monitored can be specified in the *mask* bit-mask argument.
     def watch(path : String, mask = DEFAULT_WATCH_FLAG)
-      wd = LibInotify.add_watch(@fd.not_nil!, path, mask)
+      wd = LibInotify.add_watch(@io.fd, path, mask)
       raise Errno.new "inotify add_watch failed" if wd == -1
       LOG.debug "inotify add_watch #{wd} #{path}"
       if is_dir = File.directory? path
         @watch_list[wd] = WatchInfo.new wd, path, is_dir, mask
+        # ameba:disable Style/NegatedConditionsInUnless
         unless Dir.empty?(path) || !@recursive
           Dir.each_child(path) { |child| watch(File.join(path, child)) if File.directory?(File.join(path, child)) }
         end
@@ -127,14 +124,19 @@ module Inotify
       end
     end
 
+    # Removes an item from an inotify watch list based on its *path*. Returns `true` on success.
+    # NOTE: *path* is case sensitive and has to be an exact match, to what was passed into `#watch`.
     def unwatch(path : String)
       @watch_list.each_value do |info|
-        unwatch info.wd if info.path == path
+        return unwatch info.wd if info.path == path
       end
+      false
     end
 
+    # Removes an item from an inotify watch list based on its watch descriptor *wd*.
+    # Returns `true` on success, otherwise raises.
     def unwatch(wd : LibC::Int)
-      status = LibInotify.rm_watch(@fd.not_nil!, wd)
+      status = LibInotify.rm_watch(@io.fd, wd)
       if status == -1
         case Errno.value
         when Errno::EBADF  then raise IO::Error.new "fd is not a valid file descriptor"
@@ -143,10 +145,24 @@ module Inotify
           raise Errno.new "inotify rm_watch failed"
         end
       end
+      LOG.debug "inotify rm_watch #{wd}"
+      true
+    end
+
+    # Returns all paths that are currently being watched.
+    def watching : Array(String)
+      @watch_list.values.map(&.path)
+    end
+
+    # Closes file descriptor referring to the inotify instance.
+    def close
+      @enabled = false
+      @io.close
+      LOG.debug "file descriptor referring to inotify instance closed"
     end
 
     def finalize
-      @io.not_nil!.close
+      close
     end
   end
 end
