@@ -1,1 +1,19 @@
 language: crystal
+crystal:
+  - 0.27.0
+script:
+  - crystal spec --verbose
+  - crystal docs
+deploy:
+  provider: pages
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
+  skip_cleanup: true
+  keep_history: true
+  project_name: inotify.cr
+  on:
+    tags: true
+notifications:
+  email:
+    on_success: never
+    on_failure: always
