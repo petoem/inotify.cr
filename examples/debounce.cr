@@ -2,7 +2,8 @@ require "../src/inotify"
 
 class Debounce
   @waiter : Concurrent::Future(Nil) | Nil
-  def initialize(@path : String, @delay : Time::Span, &block : Deque(Inotify::Event) -> )
+
+  def initialize(@path : String, @delay : Time::Span, &block : Deque(Inotify::Event) ->)
     @block = block
     @queue = Deque(Inotify::Event).new
     Inotify.watch @path do |event|
