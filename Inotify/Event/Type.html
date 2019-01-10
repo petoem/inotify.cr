@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.0">
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../";
+</script>
+
+  <meta id="repository-name" content="github.com/petoem/inotify.cr">
+  <title>Inotify::Event::Type - github.com/petoem/inotify.cr</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/petoem/inotify.cr/Inotify" data-name="inotify">
+      <a href="../../Inotify.html">Inotify</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/petoem/inotify.cr/Inotify/Event" data-name="inotify::event">
+      <a href="../../Inotify/Event.html">Event</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="github.com/petoem/inotify.cr/Inotify/Event/Type" data-name="inotify::event::type">
+      <a href="../../Inotify/Event/Type.html">Type</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/petoem/inotify.cr/Inotify/Watcher" data-name="inotify::watcher">
+      <a href="../../Inotify/Watcher.html">Watcher</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">enum</span> Inotify::Event::Type
+
+</h1>
+
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>Event types corresponding to the ones in <code>LibInotify</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L34" target="_blank">
+        inotify/event.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>Enum Members</h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="UNKNOWN">
+        <strong>UNKNOWN</strong> = <code><span class="n">0</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="ACCESS">
+        <strong>ACCESS</strong> = <code><span class="n">1</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="MODIFY">
+        <strong>MODIFY</strong> = <code><span class="n">2</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="ATTRIB">
+        <strong>ATTRIB</strong> = <code><span class="n">4</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="CLOSE_WRITE">
+        <strong>CLOSE_WRITE</strong> = <code><span class="n">8</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="CLOSE_NOWRITE">
+        <strong>CLOSE_NOWRITE</strong> = <code><span class="n">16</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="OPEN">
+        <strong>OPEN</strong> = <code><span class="n">32</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="MOVED_FROM">
+        <strong>MOVED_FROM</strong> = <code><span class="n">64</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="MOVED_TO">
+        <strong>MOVED_TO</strong> = <code><span class="n">128</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="CREATE">
+        <strong>CREATE</strong> = <code><span class="n">256</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="DELETE">
+        <strong>DELETE</strong> = <code><span class="n">512</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="DELETE_SELF">
+        <strong>DELETE_SELF</strong> = <code><span class="n">1024</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="MOVE_SELF">
+        <strong>MOVE_SELF</strong> = <code><span class="n">2048</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="CLOSE">
+        <strong>CLOSE</strong> = <code><span class="n">24</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="MOVE">
+        <strong>MOVE</strong> = <code><span class="n">192</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="UNMOUNT">
+        <strong>UNMOUNT</strong> = <code><span class="n">8192</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="Q_OVERFLOW">
+        <strong>Q_OVERFLOW</strong> = <code><span class="n">16384</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="IGNORED">
+        <strong>IGNORED</strong> = <code><span class="n">32768</span></code>
+      </dt>
+      
+    
+  </dl>
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#parse%28mask%3AUInt32%29%3Aself-class-method" class="signature"><strong>.parse</strong>(mask : UInt32) : self</a>
+        
+          <div class="summary"><p>Parses the given <em>mask</em> and returns the event type or <code><a href="../../Inotify/Event/Type.html#UNKNOWN">UNKNOWN</a></code>.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#access%3F-instance-method" class="signature"><strong>#access?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#attrib%3F-instance-method" class="signature"><strong>#attrib?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#close%3F-instance-method" class="signature"><strong>#close?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#close_nowrite%3F-instance-method" class="signature"><strong>#close_nowrite?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#close_write%3F-instance-method" class="signature"><strong>#close_write?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#create%3F-instance-method" class="signature"><strong>#create?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#delete%3F-instance-method" class="signature"><strong>#delete?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#delete_self%3F-instance-method" class="signature"><strong>#delete_self?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ignored%3F-instance-method" class="signature"><strong>#ignored?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#modify%3F-instance-method" class="signature"><strong>#modify?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#move%3F-instance-method" class="signature"><strong>#move?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#move_self%3F-instance-method" class="signature"><strong>#move_self?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#moved_from%3F-instance-method" class="signature"><strong>#moved_from?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#moved_to%3F-instance-method" class="signature"><strong>#moved_to?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#open%3F-instance-method" class="signature"><strong>#open?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#q_overflow%3F-instance-method" class="signature"><strong>#q_overflow?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unknown%3F-instance-method" class="signature"><strong>#unknown?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#unmount%3F-instance-method" class="signature"><strong>#unmount?</strong></a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="parse(mask:UInt32):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>parse</strong>(mask : UInt32) : self
+
+        <a class="method-permalink" href="#parse%28mask%3AUInt32%29%3Aself-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Parses the given <em>mask</em> and returns the event type or <code><a href="../../Inotify/Event/Type.html#UNKNOWN">UNKNOWN</a></code>.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L55" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="access?-instance-method">
+      <div class="signature">
+        
+        def <strong>access?</strong>
+
+        <a class="method-permalink" href="#access%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="attrib?-instance-method">
+      <div class="signature">
+        
+        def <strong>attrib?</strong>
+
+        <a class="method-permalink" href="#attrib%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L38" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="close?-instance-method">
+      <div class="signature">
+        
+        def <strong>close?</strong>
+
+        <a class="method-permalink" href="#close%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L48" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="close_nowrite?-instance-method">
+      <div class="signature">
+        
+        def <strong>close_nowrite?</strong>
+
+        <a class="method-permalink" href="#close_nowrite%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L40" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="close_write?-instance-method">
+      <div class="signature">
+        
+        def <strong>close_write?</strong>
+
+        <a class="method-permalink" href="#close_write%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L39" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="create?-instance-method">
+      <div class="signature">
+        
+        def <strong>create?</strong>
+
+        <a class="method-permalink" href="#create%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L44" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="delete?-instance-method">
+      <div class="signature">
+        
+        def <strong>delete?</strong>
+
+        <a class="method-permalink" href="#delete%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L45" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="delete_self?-instance-method">
+      <div class="signature">
+        
+        def <strong>delete_self?</strong>
+
+        <a class="method-permalink" href="#delete_self%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L46" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ignored?-instance-method">
+      <div class="signature">
+        
+        def <strong>ignored?</strong>
+
+        <a class="method-permalink" href="#ignored%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L52" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="modify?-instance-method">
+      <div class="signature">
+        
+        def <strong>modify?</strong>
+
+        <a class="method-permalink" href="#modify%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L37" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="move?-instance-method">
+      <div class="signature">
+        
+        def <strong>move?</strong>
+
+        <a class="method-permalink" href="#move%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L49" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="move_self?-instance-method">
+      <div class="signature">
+        
+        def <strong>move_self?</strong>
+
+        <a class="method-permalink" href="#move_self%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L47" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="moved_from?-instance-method">
+      <div class="signature">
+        
+        def <strong>moved_from?</strong>
+
+        <a class="method-permalink" href="#moved_from%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L42" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="moved_to?-instance-method">
+      <div class="signature">
+        
+        def <strong>moved_to?</strong>
+
+        <a class="method-permalink" href="#moved_to%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L43" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="open?-instance-method">
+      <div class="signature">
+        
+        def <strong>open?</strong>
+
+        <a class="method-permalink" href="#open%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L41" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="q_overflow?-instance-method">
+      <div class="signature">
+        
+        def <strong>q_overflow?</strong>
+
+        <a class="method-permalink" href="#q_overflow%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L51" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unknown?-instance-method">
+      <div class="signature">
+        
+        def <strong>unknown?</strong>
+
+        <a class="method-permalink" href="#unknown%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L35" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="unmount?-instance-method">
+      <div class="signature">
+        
+        def <strong>unmount?</strong>
+
+        <a class="method-permalink" href="#unmount%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L50" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
