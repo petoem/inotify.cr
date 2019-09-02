@@ -46,11 +46,11 @@ module Inotify
         if bytes_read > 0
           while pos < bytes_read
             sub_slice = slice + pos
-            event_ptr = sub_slice.pointer(sub_slice.size).as(LibInotify::Event*)
+            event_ptr = sub_slice.to_unsafe.as(LibInotify::Event*)
             # Read LibInotify::Event.name
             event_name = if event_ptr.value.len != 0
                            slice_event_name = sub_slice[16, event_ptr.value.len]
-                           String.new(slice_event_name.pointer(slice_event_name.size).as(LibC::Char*))
+                           String.new(slice_event_name.to_unsafe.as(LibC::Char*))
                          else
                            nil
                          end
