@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.0">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../css/style.css" rel="stylesheet" type="text/css">
@@ -105,7 +105,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L3" target="_blank">
+      <a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L3" target="_blank">
         inotify/event.cr
       </a>
     
@@ -120,7 +120,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28name%3AString%3F%2Cpath%3AString%3F%2Cmask%3AUInt32%2Ccookie%3AUInt32%2Cwd%3AInt32%29-class-method" class="signature"><strong>.new</strong>(name : String?, path : String?, mask : UInt32, cookie : UInt32, wd : Int32)</a>
+        <a href="#new(name:String?,path:String?,mask:UInt32,cookie:UInt32,wd:Int32)-class-method" class="signature"><strong>.new</strong>(name : String?, path : String?, mask : UInt32, cookie : UInt32, wd : Int32)</a>
         
           <div class="summary"><p>Creates a new event.</p></div>
         
@@ -136,84 +136,84 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#cookie%3AUInt32-instance-method" class="signature"><strong>#cookie</strong> : UInt32</a>
+        <a href="#cookie:UInt32-instance-method" class="signature"><strong>#cookie</strong> : UInt32</a>
         
           <div class="summary"><p>Is a unique integer that connects related events.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#cookie%3D%28cookie%3AUInt32%29-instance-method" class="signature"><strong>#cookie=</strong>(cookie : UInt32)</a>
+        <a href="#cookie=(cookie:UInt32)-instance-method" class="signature"><strong>#cookie=</strong>(cookie : UInt32)</a>
         
           <div class="summary"><p>Is a unique integer that connects related events.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#directory%3F-instance-method" class="signature"><strong>#directory?</strong></a>
+        <a href="#directory?-instance-method" class="signature"><strong>#directory?</strong></a>
         
           <div class="summary"><p>Returns if the event occurred against a directory.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#mask%3AUInt32-instance-method" class="signature"><strong>#mask</strong> : UInt32</a>
+        <a href="#mask:UInt32-instance-method" class="signature"><strong>#mask</strong> : UInt32</a>
         
           <div class="summary"><p>Contains bits that describe the event that occurred.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#mask%3D%28mask%3AUInt32%29-instance-method" class="signature"><strong>#mask=</strong>(mask : UInt32)</a>
+        <a href="#mask=(mask:UInt32)-instance-method" class="signature"><strong>#mask=</strong>(mask : UInt32)</a>
         
           <div class="summary"><p>Contains bits that describe the event that occurred.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#name%3AString%3F-instance-method" class="signature"><strong>#name</strong> : String?</a>
+        <a href="#name:String?-instance-method" class="signature"><strong>#name</strong> : String?</a>
         
           <div class="summary"><p>Name of the file or directory that triggered the event.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#name%3D%28name%3AString%3F%29-instance-method" class="signature"><strong>#name=</strong>(name : String?)</a>
+        <a href="#name=(name:String?)-instance-method" class="signature"><strong>#name=</strong>(name : String?)</a>
         
           <div class="summary"><p>Name of the file or directory that triggered the event.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#path%3AString%3F-instance-method" class="signature"><strong>#path</strong> : String?</a>
+        <a href="#path:String?-instance-method" class="signature"><strong>#path</strong> : String?</a>
         
           <div class="summary"><p>Watched <em>path</em> this event occurred against, may be <code>nil</code> if we don't have the associated <code>WatchInfo</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#path%3D%28path%3AString%3F%29-instance-method" class="signature"><strong>#path=</strong>(path : String?)</a>
+        <a href="#path=(path:String?)-instance-method" class="signature"><strong>#path=</strong>(path : String?)</a>
         
           <div class="summary"><p>Watched <em>path</em> this event occurred against, may be <code>nil</code> if we don't have the associated <code>WatchInfo</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#type%3AType-instance-method" class="signature"><strong>#type</strong> : Type</a>
+        <a href="#type:Type-instance-method" class="signature"><strong>#type</strong> : Type</a>
         
           <div class="summary"><p><code><a href="../Inotify/Event/Type.html">Type</a></code> of the event.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#type_is%3F%28bits%29-instance-method" class="signature"><strong>#type_is?</strong>(bits)</a>
+        <a href="#type_is?(bits)-instance-method" class="signature"><strong>#type_is?</strong>(bits)</a>
         
-          <div class="summary"><p>Returns whether the <em>bits</em> are set in <code><a href="../Inotify/Event.html#mask%3AUInt32-instance-method">#mask</a></code>.</p></div>
+          <div class="summary"><p>Returns whether the <em>bits</em> are set in <code><a href="../Inotify/Event.html#mask:UInt32-instance-method">#mask</a></code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#wd%3AInt32-instance-method" class="signature"><strong>#wd</strong> : Int32</a>
+        <a href="#wd:Int32-instance-method" class="signature"><strong>#wd</strong> : Int32</a>
         
           <div class="summary"><p>Watch descriptor <em>wd</em> identifies the watch for which this event occurred.</p></div>
         
@@ -267,7 +267,7 @@
         
         def self.<strong>new</strong>(name : String?, path : String?, mask : UInt32, cookie : UInt32, wd : Int32)
 
-        <a class="method-permalink" href="#new%28name%3AString%3F%2Cpath%3AString%3F%2Cmask%3AUInt32%2Ccookie%3AUInt32%2Cwd%3AInt32%29-class-method">#</a>
+        <a class="method-permalink" href="#new(name:String?,path:String?,mask:UInt32,cookie:UInt32,wd:Int32)-class-method">#</a>
       </div>
       
         <div class="doc"><p>Creates a new event.</p></div>
@@ -275,7 +275,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -292,7 +292,7 @@
         
         def <strong>cookie</strong> : UInt32
 
-        <a class="method-permalink" href="#cookie%3AUInt32-instance-method">#</a>
+        <a class="method-permalink" href="#cookie:UInt32-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Is a unique integer that connects related events.</p></div>
@@ -300,7 +300,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L13" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -310,7 +310,7 @@
         
         def <strong>cookie=</strong>(cookie : UInt32)
 
-        <a class="method-permalink" href="#cookie%3D%28cookie%3AUInt32%29-instance-method">#</a>
+        <a class="method-permalink" href="#cookie=(cookie:UInt32)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Is a unique integer that connects related events.</p></div>
@@ -318,7 +318,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -328,7 +328,7 @@
         
         def <strong>directory?</strong>
 
-        <a class="method-permalink" href="#directory%3F-instance-method">#</a>
+        <a class="method-permalink" href="#directory?-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Returns if the event occurred against a directory.</p></div>
@@ -336,7 +336,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -346,7 +346,7 @@
         
         def <strong>mask</strong> : UInt32
 
-        <a class="method-permalink" href="#mask%3AUInt32-instance-method">#</a>
+        <a class="method-permalink" href="#mask:UInt32-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Contains bits that describe the event that occurred.</p></div>
@@ -354,7 +354,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -364,7 +364,7 @@
         
         def <strong>mask=</strong>(mask : UInt32)
 
-        <a class="method-permalink" href="#mask%3D%28mask%3AUInt32%29-instance-method">#</a>
+        <a class="method-permalink" href="#mask=(mask:UInt32)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Contains bits that describe the event that occurred.</p></div>
@@ -372,7 +372,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -382,15 +382,15 @@
         
         def <strong>name</strong> : String?
 
-        <a class="method-permalink" href="#name%3AString%3F-instance-method">#</a>
+        <a class="method-permalink" href="#name:String?-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Name of the file or directory that triggered the event. Always <code>nil</code> if <code><a href="../Inotify/Event.html#wd%3AInt32-instance-method">#wd</a></code> is associated with a file.</p></div>
+        <div class="doc"><p>Name of the file or directory that triggered the event. Always <code>nil</code> if <code><a href="../Inotify/Event.html#wd:Int32-instance-method">#wd</a></code> is associated with a file.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -400,15 +400,15 @@
         
         def <strong>name=</strong>(name : String?)
 
-        <a class="method-permalink" href="#name%3D%28name%3AString%3F%29-instance-method">#</a>
+        <a class="method-permalink" href="#name=(name:String?)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Name of the file or directory that triggered the event. Always <code>nil</code> if <code><a href="../Inotify/Event.html#wd%3AInt32-instance-method">#wd</a></code> is associated with a file.</p></div>
+        <div class="doc"><p>Name of the file or directory that triggered the event. Always <code>nil</code> if <code><a href="../Inotify/Event.html#wd:Int32-instance-method">#wd</a></code> is associated with a file.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -418,7 +418,7 @@
         
         def <strong>path</strong> : String?
 
-        <a class="method-permalink" href="#path%3AString%3F-instance-method">#</a>
+        <a class="method-permalink" href="#path:String?-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Watched <em>path</em> this event occurred against, may be <code>nil</code> if we don't have the associated <code>WatchInfo</code>.</p></div>
@@ -426,7 +426,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L9" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -436,7 +436,7 @@
         
         def <strong>path=</strong>(path : String?)
 
-        <a class="method-permalink" href="#path%3D%28path%3AString%3F%29-instance-method">#</a>
+        <a class="method-permalink" href="#path=(path:String?)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Watched <em>path</em> this event occurred against, may be <code>nil</code> if we don't have the associated <code>WatchInfo</code>.</p></div>
@@ -444,7 +444,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L13" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -454,7 +454,7 @@
         
         def <strong>type</strong> : <a href="../Inotify/Event/Type.html">Type</a>
 
-        <a class="method-permalink" href="#type%3AType-instance-method">#</a>
+        <a class="method-permalink" href="#type:Type-instance-method">#</a>
       </div>
       
         <div class="doc"><p><code><a href="../Inotify/Event/Type.html">Type</a></code> of the event.</p></div>
@@ -462,7 +462,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -472,16 +472,16 @@
         
         def <strong>type_is?</strong>(bits)
 
-        <a class="method-permalink" href="#type_is%3F%28bits%29-instance-method">#</a>
+        <a class="method-permalink" href="#type_is?(bits)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Returns whether the <em>bits</em> are set in <code><a href="../Inotify/Event.html#mask%3AUInt32-instance-method">#mask</a></code>. Can be used with constants in <code>LibInotify</code>.
-Useful when <code><a href="../Inotify/Event.html#type%3AType-instance-method">#type</a></code> is <code>UNKNOWN</code>.</p></div>
+        <div class="doc"><p>Returns whether the <em>bits</em> are set in <code><a href="../Inotify/Event.html#mask:UInt32-instance-method">#mask</a></code>. Can be used with constants in <code>LibInotify</code>.
+Useful when <code><a href="../Inotify/Event.html#type:Type-instance-method">#type</a></code> is <code>UNKNOWN</code>.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -491,7 +491,7 @@ Useful when <code><a href="../Inotify/Event.html#type%3AType-instance-method">#t
         
         def <strong>wd</strong> : Int32
 
-        <a class="method-permalink" href="#wd%3AInt32-instance-method">#</a>
+        <a class="method-permalink" href="#wd:Int32-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Watch descriptor <em>wd</em> identifies the watch for which this event occurred.</p></div>
@@ -499,7 +499,7 @@ Useful when <code><a href="../Inotify/Event.html#type%3AType-instance-method">#t
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.0">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="css/style.css" rel="stylesheet" type="text/css">
@@ -99,35 +99,35 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/version.cr#L1" target="_blank">
+      <a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/version.cr#L1" target="_blank">
         inotify/version.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/settings.cr#L3" target="_blank">
+      <a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/settings.cr#L3" target="_blank">
         inotify/settings.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/event.cr#L1" target="_blank">
+      <a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/event.cr#L1" target="_blank">
         inotify/event.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L1" target="_blank">
+      <a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L1" target="_blank">
         inotify/watcher.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify.cr#L10" target="_blank">
+      <a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify.cr#L10" target="_blank">
         inotify.cr
       </a>
     
@@ -166,14 +166,14 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#watch%28path%3AString%2Crecursive%3ABool%3Dfalse%2C%26block%3AInotify%3A%3AEvent-%3E%29%3AInotify%3A%3AWatcher-class-method" class="signature"><strong>.watch</strong>(path : String, recursive : Bool = <span class="n">false</span>, &block : Inotify::Event -> ) : Inotify::Watcher</a>
+        <a href="#watch(path:String,recursive:Bool=false,&block:Inotify::Event-%3E):Inotify::Watcher-class-method" class="signature"><strong>.watch</strong>(path : String, recursive : Bool = <span class="n">false</span>, &block : Inotify::Event -> ) : Inotify::Watcher</a>
         
           <div class="summary"><p>All-in-one method to create inotify instance to watch one path.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#watcher%28recursive%3ABool%3Dfalse%29%3AInotify%3A%3AWatcher-class-method" class="signature"><strong>.watcher</strong>(recursive : Bool = <span class="n">false</span>) : Inotify::Watcher</a>
+        <a href="#watcher(recursive:Bool=false):Inotify::Watcher-class-method" class="signature"><strong>.watcher</strong>(recursive : Bool = <span class="n">false</span>) : Inotify::Watcher</a>
         
           <div class="summary"><p>Same as <code>Inotify::Watcher.new</code>.</p></div>
         
@@ -201,7 +201,7 @@
         
         def self.<strong>watch</strong>(path : String, recursive : Bool = <span class="n">false</span>, &block : <a href="Inotify/Event.html">Inotify::Event</a> -> ) : <a href="Inotify/Watcher.html">Inotify::Watcher</a>
 
-        <a class="method-permalink" href="#watch%28path%3AString%2Crecursive%3ABool%3Dfalse%2C%26block%3AInotify%3A%3AEvent-%3E%29%3AInotify%3A%3AWatcher-class-method">#</a>
+        <a class="method-permalink" href="#watch(path:String,recursive:Bool=false,&block:Inotify::Event-%3E):Inotify::Watcher-class-method">#</a>
       </div>
       
         <div class="doc"><p>All-in-one method to create inotify instance to watch one path.</p></div>
@@ -209,7 +209,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -219,7 +219,7 @@
         
         def self.<strong>watcher</strong>(recursive : Bool = <span class="n">false</span>) : <a href="Inotify/Watcher.html">Inotify::Watcher</a>
 
-        <a class="method-permalink" href="#watcher%28recursive%3ABool%3Dfalse%29%3AInotify%3A%3AWatcher-class-method">#</a>
+        <a class="method-permalink" href="#watcher(recursive:Bool=false):Inotify::Watcher-class-method">#</a>
       </div>
       
         <div class="doc"><p>Same as <code>Inotify::Watcher.new</code>.</p></div>
@@ -227,7 +227,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>

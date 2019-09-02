@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.0">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../css/style.css" rel="stylesheet" type="text/css">
@@ -101,7 +101,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L18" target="_blank">
+      <a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L18" target="_blank">
         inotify/watcher.cr
       </a>
     
@@ -116,7 +116,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28recursive%3ABool%3Dfalse%29-class-method" class="signature"><strong>.new</strong>(recursive : Bool = <span class="n">false</span>)</a>
+        <a href="#new(recursive:Bool=false)-class-method" class="signature"><strong>.new</strong>(recursive : Bool = <span class="n">false</span>)</a>
         
           <div class="summary"><p>Creates a new inotify instance and starts reading from the event queue.</p></div>
         
@@ -134,7 +134,7 @@
       <li class="entry-summary">
         <a href="#clear_event_handlers-instance-method" class="signature"><strong>#clear_event_handlers</strong></a>
         
-          <div class="summary"><p>Removes all event handlers added with <code><a href="../Inotify/Watcher.html#on_event%28%26block%3AEvent-%3E%29-instance-method">#on_event</a></code>.</p></div>
+          <div class="summary"><p>Removes all event handlers added with <code><a href="../Inotify/Watcher.html#on_event(&block:Event-%3E)-instance-method">#on_event</a></code>.</p></div>
         
       </li>
     
@@ -151,35 +151,35 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#on_event%28%26block%3AEvent-%3E%29-instance-method" class="signature"><strong>#on_event</strong>(&block : Event -> )</a>
+        <a href="#on_event(&block:Event-%3E)-instance-method" class="signature"><strong>#on_event</strong>(&block : Event -> )</a>
         
           <div class="summary"><p>Attach a <code>&block</code> to the instance, this will receive all events.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#unwatch%28path%3AString%29-instance-method" class="signature"><strong>#unwatch</strong>(path : String)</a>
+        <a href="#unwatch(path:String)-instance-method" class="signature"><strong>#unwatch</strong>(path : String)</a>
         
           <div class="summary"><p>Removes an item from an inotify watch list based on its <em>path</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#unwatch%28wd%3ALibC%3A%3AInt%29-instance-method" class="signature"><strong>#unwatch</strong>(wd : LibC::Int)</a>
+        <a href="#unwatch(wd:LibC::Int)-instance-method" class="signature"><strong>#unwatch</strong>(wd : LibC::Int)</a>
         
           <div class="summary"><p>Removes an item from an inotify watch list based on its watch descriptor <em>wd</em>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#watch%28path%3AString%2Cmask%3DDEFAULT_WATCH_FLAG%29-instance-method" class="signature"><strong>#watch</strong>(path : String, mask = <span class="t">DEFAULT_WATCH_FLAG</span>)</a>
+        <a href="#watch(path:String,mask=DEFAULT_WATCH_FLAG)-instance-method" class="signature"><strong>#watch</strong>(path : String, mask = <span class="t">DEFAULT_WATCH_FLAG</span>)</a>
         
           <div class="summary"><p>Adds a new watch, or modifies an existing watch, for the <em>path</em> specified.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#watching%3AArray%28String%29-instance-method" class="signature"><strong>#watching</strong> : Array(String)</a>
+        <a href="#watching:Array(String)-instance-method" class="signature"><strong>#watching</strong> : Array(String)</a>
         
           <div class="summary"><p>Returns all paths that are currently being watched.</p></div>
         
@@ -223,7 +223,7 @@
         
         def self.<strong>new</strong>(recursive : Bool = <span class="n">false</span>)
 
-        <a class="method-permalink" href="#new%28recursive%3ABool%3Dfalse%29-class-method">#</a>
+        <a class="method-permalink" href="#new(recursive:Bool=false)-class-method">#</a>
       </div>
       
         <div class="doc"><p>Creates a new inotify instance and starts reading from the event queue.
@@ -232,7 +232,7 @@ Optional: Set <em>recursive</em> to <code>true</code> to automatically watch all
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -252,12 +252,12 @@ Optional: Set <em>recursive</em> to <code>true</code> to automatically watch all
         <a class="method-permalink" href="#clear_event_handlers-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Removes all event handlers added with <code><a href="../Inotify/Watcher.html#on_event%28%26block%3AEvent-%3E%29-instance-method">#on_event</a></code>.</p></div>
+        <div class="doc"><p>Removes all event handlers added with <code><a href="../Inotify/Watcher.html#on_event(&block:Event-%3E)-instance-method">#on_event</a></code>.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L105" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L105" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -275,7 +275,7 @@ Optional: Set <em>recursive</em> to <code>true</code> to automatically watch all
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L158" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L158" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -291,7 +291,7 @@ Optional: Set <em>recursive</em> to <code>true</code> to automatically watch all
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L164" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L164" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -301,7 +301,7 @@ Optional: Set <em>recursive</em> to <code>true</code> to automatically watch all
         
         def <strong>on_event</strong>(&block : <a href="../Inotify/Event.html">Event</a> -> )
 
-        <a class="method-permalink" href="#on_event%28%26block%3AEvent-%3E%29-instance-method">#</a>
+        <a class="method-permalink" href="#on_event(&block:Event-%3E)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Attach a <code>&block</code> to the instance, this will receive all events.</p></div>
@@ -309,7 +309,7 @@ Optional: Set <em>recursive</em> to <code>true</code> to automatically watch all
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -319,17 +319,17 @@ Optional: Set <em>recursive</em> to <code>true</code> to automatically watch all
         
         def <strong>unwatch</strong>(path : String)
 
-        <a class="method-permalink" href="#unwatch%28path%3AString%29-instance-method">#</a>
+        <a class="method-permalink" href="#unwatch(path:String)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Removes an item from an inotify watch list based on its <em>path</em>. Returns <code>true</code> on success.</p>
 
-<p><span class="flag purple">NOTE</span>  <em>path</em> is case sensitive and has to be an exact match, to what was passed into <code><a href="../Inotify/Watcher.html#watch%28path%3AString%2Cmask%3DDEFAULT_WATCH_FLAG%29-instance-method">#watch</a></code>.</p></div>
+<p><span class="flag purple">NOTE</span>  <em>path</em> is case sensitive and has to be an exact match, to what was passed into <code><a href="../Inotify/Watcher.html#watch(path:String,mask=DEFAULT_WATCH_FLAG)-instance-method">#watch</a></code>.</p></div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L129" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -339,7 +339,7 @@ Optional: Set <em>recursive</em> to <code>true</code> to automatically watch all
         
         def <strong>unwatch</strong>(wd : LibC::Int)
 
-        <a class="method-permalink" href="#unwatch%28wd%3ALibC%3A%3AInt%29-instance-method">#</a>
+        <a class="method-permalink" href="#unwatch(wd:LibC::Int)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Removes an item from an inotify watch list based on its watch descriptor <em>wd</em>.
@@ -348,7 +348,7 @@ Returns <code>true</code> on success, otherwise raises.</p></div>
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L138" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L138" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -358,7 +358,7 @@ Returns <code>true</code> on success, otherwise raises.</p></div>
         
         def <strong>watch</strong>(path : String, mask = <span class="t">DEFAULT_WATCH_FLAG</span>)
 
-        <a class="method-permalink" href="#watch%28path%3AString%2Cmask%3DDEFAULT_WATCH_FLAG%29-instance-method">#</a>
+        <a class="method-permalink" href="#watch(path:String,mask=DEFAULT_WATCH_FLAG)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Adds a new watch, or modifies an existing watch, for the <em>path</em> specified.
@@ -367,7 +367,7 @@ Optional: The events to be monitored can be specified in the <em>mask</em> bit-m
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L112" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -377,7 +377,7 @@ Optional: The events to be monitored can be specified in the <em>mask</em> bit-m
         
         def <strong>watching</strong> : Array(String)
 
-        <a class="method-permalink" href="#watching%3AArray%28String%29-instance-method">#</a>
+        <a class="method-permalink" href="#watching:Array(String)-instance-method">#</a>
       </div>
       
         <div class="doc"><p>Returns all paths that are currently being watched.</p></div>
@@ -385,7 +385,7 @@ Optional: The events to be monitored can be specified in the <em>mask</em> bit-m
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/031dc298328f0d5dd17d23b9d90a9c37fc913473/src/inotify/watcher.cr#L153" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/041265946373e134add6e4a3c2801f4d5b70ba41/src/inotify/watcher.cr#L153" target="_blank">View source</a>]
         
       </div>
     </div>
