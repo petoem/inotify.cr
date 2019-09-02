@@ -5,7 +5,7 @@ install:
   - shards install
 script:
   - crystal spec --verbose
-  - crystal bin/ameba.cr
+  - bin/ameba
 before_deploy:
   - crystal docs
 deploy:
