@@ -35,7 +35,7 @@ module Inotify
       spawn lurk
     end
 
-    private def lurk
+    private def lurk # ameba:disable Metrics/CyclomaticComplexity
       pos = 0
       while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)

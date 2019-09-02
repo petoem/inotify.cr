@@ -77,7 +77,6 @@ describe Inotify do
         # We should get MODIFY two times.
         EVENT_CHAN.receive.should eq EVENT_CHAN.receive
         EVENT_CHAN.should be_empty
-        watcher.unwatch TEST_FILE
       end
       watcher.close
       cleanup TEST_FILE
