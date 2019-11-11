@@ -15,26 +15,26 @@ describe Inotify do
       watcher = Inotify.watch TEST_FILE do |event|
         EVENT_CHAN.send event
       end
-      `echo "test" >> #{TEST_FILE}`
-      cleanup TEST_FILE
+      append(TEST_FILE, "test")
       EVENT_CHAN.receive.type.should eq Type::MODIFY
+      cleanup TEST_FILE
       EVENT_CHAN.receive.type.should eq Type::DELETE_SELF
       EVENT_CHAN.receive.type.should eq Type::IGNORED
+      Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
       watcher.close
-      EVENT_CHAN.should be_empty
     end
     it "one test directory" do
       watcher = Inotify.watch TEST_DIR do |event|
         EVENT_CHAN.send event
       end
       prepare TEST_FILE
-      `echo "test" >> #{TEST_FILE}`
+      append(TEST_FILE, "test")
       cleanup TEST_FILE
       EVENT_CHAN.receive.type.should eq Type::CREATE
       EVENT_CHAN.receive.type.should eq Type::MODIFY
       EVENT_CHAN.receive.type.should eq Type::DELETE
       watcher.close
-      EVENT_CHAN.should be_empty
+      Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
     end
   end
 
@@ -43,102 +43,123 @@ describe Inotify do
       it "recursive set to false" do
         watcher = Inotify::Watcher.new false
         watcher.should be_a Inotify::Watcher
+        watcher.on_event { |event| EVENT_CHAN.send event }
         watcher.watch TEST_DIR
-        `mkdir #{TEST_DIR}/directory`
+        Dir.mkdir "#{TEST_DIR}/directory"
+        EVENT_CHAN.receive.type.should eq Type::CREATE
         watcher.watching.should_not contain "#{TEST_DIR}/directory"
         watcher.close
-        `rm -R #{TEST_DIR}/directory`
+        Dir.rmdir "#{TEST_DIR}/directory"
       end
       it "recursive set to true" do
         watcher = Inotify::Watcher.new true
         watcher.should be_a Inotify::Watcher
+        watcher.on_event { |event| EVENT_CHAN.send event }
         watcher.watch TEST_DIR
-        `mkdir #{TEST_DIR}/directory`
+        Dir.mkdir "#{TEST_DIR}/directory"
+        EVENT_CHAN.receive.type.should eq Type::CREATE
         watcher.watching.should contain "#{TEST_DIR}/directory"
         watcher.close
-        `rm -R #{TEST_DIR}/directory`
+        Dir.rmdir "#{TEST_DIR}/directory"
       end
     end
 
     describe "#on_event" do
-      watcher = Inotify::Watcher.new
-      prepare TEST_FILE
       it "add event handler" do
+        watcher = Inotify::Watcher.new
         watcher.on_event { |event| EVENT_CHAN.send event }
         watcher.@event_callbacks.size.should eq 1
+        watcher.close
       end
       it "allows multiple event handlers" do
+        watcher = Inotify::Watcher.new
+        watcher.on_event { |event| EVENT_CHAN.send event }
         watcher.on_event { |event| EVENT_CHAN.send event }
         watcher.@event_callbacks.size.should eq 2
+        watcher.close
       end
       it "event handler is properly called" do
+        watcher = Inotify::Watcher.new
+        watcher.on_event { |event| EVENT_CHAN.send event }
+        watcher.on_event { |event| EVENT_CHAN.send event }
+        prepare TEST_FILE
         watcher.watch TEST_FILE
-        `echo "test" >> #{TEST_FILE}`
+        append(TEST_FILE, "test")
         # We should get MODIFY two times.
         EVENT_CHAN.receive.should eq EVENT_CHAN.receive
-        EVENT_CHAN.should be_empty
+        Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
+        watcher.close
+        cleanup TEST_FILE
       end
-      watcher.close
-      cleanup TEST_FILE
     end
     describe "#clear_event_handlers" do
-      watcher = Inotify::Watcher.new
-      watcher.on_event { |event| EVENT_CHAN.send event }
       it "removes all event handlers" do
+        watcher = Inotify::Watcher.new
+        watcher.on_event { |event| EVENT_CHAN.send event }
         watcher.clear_event_handlers
         watcher.@event_callbacks.should be_empty
+        watcher.close
       end
       it "no event handlers are called anymore" do
+        watcher = Inotify::Watcher.new
+        watcher.on_event { |event| EVENT_CHAN.send event }
+        watcher.clear_event_handlers
         watcher.watch TEST_DIR
         prepare TEST_FILE
         cleanup TEST_FILE
-        EVENT_CHAN.should be_empty
+        Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
         watcher.unwatch TEST_DIR
+        watcher.close
       end
-      watcher.close
     end
     describe "#watch" do
-      watcher = Inotify::Watcher.new
-      prepare TEST_FILE
       it "successfully watches directory" do
+        watcher = Inotify::Watcher.new
         watcher.watch TEST_DIR
         watcher.watching.should contain TEST_DIR
+        watcher.close
       end
       it "successfully watches file" do
+        watcher = Inotify::Watcher.new
+        prepare TEST_FILE
         watcher.watch TEST_FILE
         watcher.watching.should contain TEST_FILE
         cleanup TEST_FILE
+        watcher.close
       end
       it "raises if directory does not exist" do
+        watcher = Inotify::Watcher.new
         expect_raises Errno, "inotify add_watch failed" do
           watcher.watch "./does/not/exist"
         end
+        watcher.close
       end
       it "raises if file does not exist" do
+        watcher = Inotify::Watcher.new
         expect_raises Errno, "inotify add_watch failed" do
           watcher.watch "./file/does/not/exist.txt"
         end
+        watcher.close
       end
-      watcher.close
     end
 
     describe "#unwatch" do
       it "should stop watching file" do
-        File.new "#{TEST_DIR}/unwatch.txt", "w"
+        prepare "#{TEST_DIR}/unwatch.txt"
         watcher = Inotify::Watcher.new
-        EVENT_CHAN.should be_empty
+        Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
         watcher.on_event { |event| EVENT_CHAN.send event }
         watcher.watch "#{TEST_DIR}/unwatch.txt"
         watcher.watching.should contain "#{TEST_DIR}/unwatch.txt"
         watcher.unwatch "#{TEST_DIR}/unwatch.txt"
         EVENT_CHAN.receive.type.should eq Type::IGNORED
         watcher.watching.should_not contain "#{TEST_DIR}/unwatch.txt"
-        File.delete "#{TEST_DIR}/unwatch.txt"
+        cleanup "#{TEST_DIR}/unwatch.txt"
         watcher.close
       end
       it "should stop watching directory" do
         watcher = Inotify::Watcher.new
-        EVENT_CHAN.should be_empty
+        Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
         watcher.on_event { |event| EVENT_CHAN.send event }
         Dir.mkdir "#{TEST_DIR}/directory"
         watcher.watch "#{TEST_DIR}/directory"
@@ -152,15 +173,17 @@ describe Inotify do
     end
 
     describe "#watching" do
-      watcher = Inotify::Watcher.new
       it "should return an Array(String)" do
+        watcher = Inotify::Watcher.new
         watcher.watching.should be_a Array(String)
+        watcher.close
       end
       it "contains watched paths" do
+        watcher = Inotify::Watcher.new
         watcher.watch TEST_DIR
         watcher.watching.should contain TEST_DIR
+        watcher.close
       end
-      watcher.close
     end
     describe "#close" do
       it "should properly close fd" do

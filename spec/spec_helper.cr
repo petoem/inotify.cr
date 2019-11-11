@@ -9,9 +9,13 @@ EVENT_CHAN = Channel(Inotify::Event).new
 alias Type = Inotify::Event::Type
 
 def prepare(file)
-  `touch #{file}`
+  File.open(file, "a").close
 end
 
 def cleanup(file)
-  `rm #{file}`
+  File.delete(file)
+end
+
+def append(file, data)
+  File.write(file, data, mode: "a")
 end
