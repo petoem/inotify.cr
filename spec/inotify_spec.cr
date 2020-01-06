@@ -20,7 +20,7 @@ describe Inotify do
       cleanup TEST_FILE
       EVENT_CHAN.receive.type.should eq Type::DELETE_SELF
       EVENT_CHAN.receive.type.should eq Type::IGNORED
-      Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
+      no_event?(EVENT_CHAN).should be_true
       watcher.close
     end
     it "one test directory" do
@@ -34,7 +34,7 @@ describe Inotify do
       EVENT_CHAN.receive.type.should eq Type::MODIFY
       EVENT_CHAN.receive.type.should eq Type::DELETE
       watcher.close
-      Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
+      no_event?(EVENT_CHAN).should be_true
     end
   end
 
@@ -87,7 +87,7 @@ describe Inotify do
         append(TEST_FILE, "test")
         # We should get MODIFY two times.
         EVENT_CHAN.receive.should eq EVENT_CHAN.receive
-        Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
+        no_event?(EVENT_CHAN).should be_true
         watcher.close
         cleanup TEST_FILE
       end
@@ -107,7 +107,7 @@ describe Inotify do
         watcher.watch TEST_DIR
         prepare TEST_FILE
         cleanup TEST_FILE
-        Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
+        no_event?(EVENT_CHAN).should be_true
         watcher.unwatch TEST_DIR
         watcher.close
       end
@@ -147,7 +147,7 @@ describe Inotify do
       it "should stop watching file" do
         prepare "#{TEST_DIR}/unwatch.txt"
         watcher = Inotify::Watcher.new
-        Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
+        no_event?(EVENT_CHAN).should be_true
         watcher.on_event { |event| EVENT_CHAN.send event }
         watcher.watch "#{TEST_DIR}/unwatch.txt"
         watcher.watching.should contain "#{TEST_DIR}/unwatch.txt"
@@ -159,7 +159,7 @@ describe Inotify do
       end
       it "should stop watching directory" do
         watcher = Inotify::Watcher.new
-        Channel.select({EVENT_CHAN.receive_select_action}, true).should eq({1, Channel::NotReady})
+        no_event?(EVENT_CHAN).should be_true
         watcher.on_event { |event| EVENT_CHAN.send event }
         Dir.mkdir "#{TEST_DIR}/directory"
         watcher.watch "#{TEST_DIR}/directory"

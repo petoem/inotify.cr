@@ -19,3 +19,12 @@ end
 def append(file, data)
   File.write(file, data, mode: "a")
 end
+
+def no_event?(ch)
+  select
+  when ch.receive
+    false
+  else
+    true
+  end
+end
