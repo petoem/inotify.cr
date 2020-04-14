@@ -129,14 +129,14 @@ describe Inotify do
       end
       it "raises if directory does not exist" do
         watcher = Inotify::Watcher.new
-        expect_raises Errno, "inotify add_watch failed" do
+        expect_raises Inotify::Error, "inotify add_watch failed" do
           watcher.watch "./does/not/exist"
         end
         watcher.close
       end
       it "raises if file does not exist" do
         watcher = Inotify::Watcher.new
-        expect_raises Errno, "inotify add_watch failed" do
+        expect_raises Inotify::Error, "inotify add_watch failed" do
           watcher.watch "./file/does/not/exist.txt"
         end
         watcher.close

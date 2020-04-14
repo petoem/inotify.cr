@@ -24,7 +24,7 @@ module Inotify
     # Optional: Set *recursive* to `true` to automatically watch all new subdirectories.
     def initialize(@recursive : Bool = false)
       fd = LibInotify.init LibC::O_NONBLOCK
-      raise Errno.new "inotify init failed" if fd == -1
+      raise Error.from_errno "inotify init failed" if fd == -1
       LOG.debug "inotify init"
       @io = IO::FileDescriptor.new fd
       LOG.debug "inotify IO created"
@@ -41,7 +41,7 @@ module Inotify
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
         LOG.debug "waiting for event data"
         bytes_read = @io.read(slice)
-        raise Errno.new "inotify read() failed" if bytes_read == -1
+        raise Error.from_errno "inotify read() failed" if bytes_read == -1
         LOG.debug "received event data"
         if bytes_read > 0
           while pos < bytes_read
@@ -76,10 +76,11 @@ module Inotify
           pos = 0
         end
       end
-    rescue ex : Errno
+    rescue ex
       if @enabled
         raise ex
-      elsif ex.errno != Errno::EBADF
+      elsif !(ex.is_a?(IO::Error) && ex.message == "Closed stream")
+        # Ignore the `Closed stream (IO::Error)` when watcher is closed
         raise ex
       end
     end
@@ -111,7 +112,7 @@ module Inotify
     # Optional: The events to be monitored can be specified in the *mask* bit-mask argument.
     def watch(path : String, mask = DEFAULT_WATCH_FLAG)
       wd = LibInotify.add_watch(@io.fd, path, mask)
-      raise Errno.new "inotify add_watch failed" if wd == -1
+      raise Error.from_errno "inotify add_watch failed" if wd == -1
       LOG.debug "inotify add_watch #{wd} #{path}"
       if is_dir = File.directory? path
         @watch_list[wd] = WatchInfo.new wd, path, is_dir, mask
@@ -140,9 +141,9 @@ module Inotify
       if status == -1
         case Errno.value
         when Errno::EBADF  then raise IO::Error.new "fd is not a valid file descriptor"
-        when Errno::EINVAL then raise Errno.new "The watch descriptor wd is not valid; or fd is not an inotify file descriptor"
+        when Errno::EINVAL then raise Error.from_errno "The watch descriptor wd is not valid; or fd is not an inotify file descriptor"
         else
-          raise Errno.new "inotify rm_watch failed"
+          raise Error.from_errno "inotify rm_watch failed"
         end
       end
       LOG.debug "inotify rm_watch #{wd}"
@@ -164,5 +165,9 @@ module Inotify
     def finalize
       close
     end
+  end
+
+  class Error < Exception
+    include SystemError
   end
 end
