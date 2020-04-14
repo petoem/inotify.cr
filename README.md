@@ -31,13 +31,14 @@ end
 sleep 10.seconds
 watcher.close
 ```
-*Note: You have to run something in the main fiber or else your program will exit.* 
+
+_Note: You have to run something in the main fiber or else your program will exit._
 
 More documentation can be found [here](https://petoem.github.io/inotify.cr/).
 
 ## Development
 
-To enable logging to `STDOUT` set `INOTIFY_LOG_LEVEL` environment variable to `DEBUG`.
+To enable logging to `STDOUT` using environment variables, follow the instructions in the [api docs](https://crystal-lang.org/api/0.34.0/Log.html#configure-logging-from-environment-variables). Use log source `inotify` and severity level `DEBUG`.
 
 ## Contributing
 

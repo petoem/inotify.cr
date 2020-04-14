@@ -25,9 +25,9 @@ module Inotify
     def initialize(@recursive : Bool = false)
       fd = LibInotify.init LibC::O_NONBLOCK
       raise Error.from_errno "inotify init failed" if fd == -1
-      LOG.debug "inotify init"
+      Log.debug { "inotify init" }
       @io = IO::FileDescriptor.new fd
-      LOG.debug "inotify IO created"
+      Log.debug { "inotify IO created" }
 
       @event_channel = Channel(Event).new
       @enabled = true
@@ -39,10 +39,10 @@ module Inotify
       pos = 0
       while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
-        LOG.debug "waiting for event data"
+        Log.debug { "waiting for event data" }
         bytes_read = @io.read(slice)
         raise Error.from_errno "inotify read() failed" if bytes_read == -1
-        LOG.debug "received event data"
+        Log.debug { "received event data" }
         if bytes_read > 0
           while pos < bytes_read
             sub_slice = slice + pos
@@ -113,7 +113,7 @@ module Inotify
     def watch(path : String, mask = DEFAULT_WATCH_FLAG)
       wd = LibInotify.add_watch(@io.fd, path, mask)
       raise Error.from_errno "inotify add_watch failed" if wd == -1
-      LOG.debug "inotify add_watch #{wd} #{path}"
+      Log.debug { "inotify add_watch #{wd} #{path}" }
       if is_dir = File.directory? path
         @watch_list[wd] = WatchInfo.new wd, path, is_dir, mask
         # ameba:disable Style/NegatedConditionsInUnless
@@ -146,7 +146,7 @@ module Inotify
           raise Error.from_errno "inotify rm_watch failed"
         end
       end
-      LOG.debug "inotify rm_watch #{wd}"
+      Log.debug { "inotify rm_watch #{wd}" }
       true
     end
 
@@ -159,7 +159,7 @@ module Inotify
     def close
       @enabled = false
       @io.close
-      LOG.debug "file descriptor referring to inotify instance closed"
+      Log.debug { "file descriptor referring to inotify instance closed" }
     end
 
     def finalize

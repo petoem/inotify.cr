@@ -1,6 +1,8 @@
 require "spec"
 require "../src/inotify"
 
+Log.setup_from_env
+
 TIME       = 500.milliseconds
 TEST_DIR   = "./spec/test"
 TEST_FILE  = "#{TEST_DIR}/file.txt"
