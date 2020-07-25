@@ -17,7 +17,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install dependencies
-      run: shards install
+      run: |
+        crystal --version
+        shards install
     - name: Run tests
       run: crystal spec --verbose
     - name: Run linter
