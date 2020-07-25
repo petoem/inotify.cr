@@ -49,7 +49,7 @@ describe Inotify do
         EVENT_CHAN.receive.type.should eq Type::CREATE
         watcher.watching.should_not contain "#{TEST_DIR}/directory"
         watcher.close
-        Dir.rmdir "#{TEST_DIR}/directory"
+        Dir.delete "#{TEST_DIR}/directory"
       end
       it "recursive set to true" do
         watcher = Inotify::Watcher.new true
@@ -60,7 +60,7 @@ describe Inotify do
         EVENT_CHAN.receive.type.should eq Type::CREATE
         watcher.watching.should contain "#{TEST_DIR}/directory"
         watcher.close
-        Dir.rmdir "#{TEST_DIR}/directory"
+        Dir.delete "#{TEST_DIR}/directory"
       end
     end
 
@@ -167,7 +167,7 @@ describe Inotify do
         watcher.unwatch "#{TEST_DIR}/directory"
         EVENT_CHAN.receive.type.should eq Type::IGNORED
         watcher.watching.should_not contain "#{TEST_DIR}/directory"
-        Dir.rmdir "#{TEST_DIR}/directory"
+        Dir.delete "#{TEST_DIR}/directory"
         watcher.close
       end
     end
