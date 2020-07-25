@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.33.0">
+<meta name="generator" content="Crystal Docs 0.34.0">
+<meta name="crystal_docs.project_version" content="1.0.3">
+<meta name="crystal_docs.project_name" content="inotify">
+
 
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
@@ -14,10 +17,10 @@
   </symbol>
 </svg>
 
-  <meta id="repository-name" content="github.com/petoem/inotify.cr">
-  <title>README - github.com/petoem/inotify.cr</title>
+  <meta id="repository-name" content="inotify">
+  <title>inotify 1.0.3</title>
   <script type="text/javascript">
-  CrystalDoc.base_path = "";
+  CrystalDocs.base_path = "";
   </script>
 </head>
 <body>
@@ -28,8 +31,16 @@
       <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
     </div>
 
-    <div class="repository-links">
-      <a href="index.html">README</a>
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="index.html">
+          inotify
+        </a>
+      </h1>
+
+      <span class="project-version">
+        1.0.3
+      </span>
     </div>
   </div>
 
@@ -40,22 +51,22 @@
   <div class="types-list">
     <ul>
   
-  <li class="parent " data-id="github.com/petoem/inotify.cr/Inotify" data-name="inotify">
+  <li class="parent " data-id="inotify/Inotify" data-name="inotify">
       <a href="Inotify.html">Inotify</a>
       
         <ul>
   
-  <li class=" " data-id="github.com/petoem/inotify.cr/Inotify/Error" data-name="inotify::error">
+  <li class=" " data-id="inotify/Inotify/Error" data-name="inotify::error">
       <a href="Inotify/Error.html">Error</a>
       
     </li>
   
-  <li class="parent " data-id="github.com/petoem/inotify.cr/Inotify/Event" data-name="inotify::event">
+  <li class="parent " data-id="inotify/Inotify/Event" data-name="inotify::event">
       <a href="Inotify/Event.html">Event</a>
       
         <ul>
   
-  <li class=" " data-id="github.com/petoem/inotify.cr/Inotify/Event/Type" data-name="inotify::event::type">
+  <li class=" " data-id="inotify/Inotify/Event/Type" data-name="inotify::event::type">
       <a href="Inotify/Event/Type.html">Type</a>
       
     </li>
@@ -65,7 +76,7 @@
       
     </li>
   
-  <li class=" " data-id="github.com/petoem/inotify.cr/Inotify/Watcher" data-name="inotify::watcher">
+  <li class=" " data-id="inotify/Inotify/Watcher" data-name="inotify::watcher">
       <a href="Inotify/Watcher.html">Watcher</a>
       
     </li>
@@ -124,7 +135,7 @@ watcher <span class="o">=</span> <span class="t">Inotify</span>.watch <span clas
 sleep <span class="n">10</span>.seconds
 watcher.close</code></pre>
 
-<p><em>Note: You have to run something in the main fiber or else your program will exit.</em> </p>
+<p><em>Note: You have to run something in the main fiber or else your program will exit.</em></p>
 
 <p>More documentation can be found <a href="https://petoem.github.io/inotify.cr/" target="_blank">here</a>.</p>
 
@@ -134,7 +145,7 @@ watcher.close</code></pre>
   </svg>
 </a>Development</h2>
 
-<p>To enable logging to <code>STDOUT</code> set <code>INOTIFY_LOG_LEVEL</code> environment variable to <code>DEBUG</code>.</p>
+<p>To enable logging to <code>STDOUT</code> using environment variables, follow the instructions in the <a href="https://crystal-lang.org/api/0.34.0/Log.html#configure-logging-from-environment-variables" target="_blank">api docs</a>. Use log source <code>inotify</code> and severity level <code>DEBUG</code>.</p>
 
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">

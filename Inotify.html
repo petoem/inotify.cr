@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.33.0">
+<meta name="generator" content="Crystal Docs 0.34.0">
+<meta name="crystal_docs.project_version" content="1.0.3">
+<meta name="crystal_docs.project_name" content="inotify">
+
 
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
@@ -14,10 +17,10 @@
   </symbol>
 </svg>
 
-  <meta id="repository-name" content="github.com/petoem/inotify.cr">
-  <title>Inotify - github.com/petoem/inotify.cr</title>
+  <meta id="repository-name" content="inotify">
+  <title>Inotify - inotify 1.0.3</title>
   <script type="text/javascript">
-    CrystalDoc.base_path = "";
+    CrystalDocs.base_path = "";
   </script>
 </head>
 <body>
@@ -28,8 +31,16 @@
       <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
     </div>
 
-    <div class="repository-links">
-      <a href="index.html">README</a>
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="index.html">
+          inotify
+        </a>
+      </h1>
+
+      <span class="project-version">
+        1.0.3
+      </span>
     </div>
   </div>
 
@@ -40,22 +51,22 @@
   <div class="types-list">
     <ul>
   
-  <li class="parent open current" data-id="github.com/petoem/inotify.cr/Inotify" data-name="inotify">
+  <li class="parent open current" data-id="inotify/Inotify" data-name="inotify">
       <a href="Inotify.html">Inotify</a>
       
         <ul>
   
-  <li class=" " data-id="github.com/petoem/inotify.cr/Inotify/Error" data-name="inotify::error">
+  <li class=" " data-id="inotify/Inotify/Error" data-name="inotify::error">
       <a href="Inotify/Error.html">Error</a>
       
     </li>
   
-  <li class="parent " data-id="github.com/petoem/inotify.cr/Inotify/Event" data-name="inotify::event">
+  <li class="parent " data-id="inotify/Inotify/Event" data-name="inotify::event">
       <a href="Inotify/Event.html">Event</a>
       
         <ul>
   
-  <li class=" " data-id="github.com/petoem/inotify.cr/Inotify/Event/Type" data-name="inotify::event::type">
+  <li class=" " data-id="inotify/Inotify/Event/Type" data-name="inotify::event::type">
       <a href="Inotify/Event/Type.html">Type</a>
       
     </li>
@@ -65,7 +76,7 @@
       
     </li>
   
-  <li class=" " data-id="github.com/petoem/inotify.cr/Inotify/Watcher" data-name="inotify::watcher">
+  <li class=" " data-id="inotify/Inotify/Watcher" data-name="inotify::watcher">
       <a href="Inotify/Watcher.html">Watcher</a>
       
     </li>
@@ -115,36 +126,36 @@
   </h2>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/64f665fc5d01260aee7ce8f91581946ebc9bfa34/src/inotify/version.cr#L1" target="_blank">
-        inotify/version.cr
+      <a href="https://github.com/petoem/inotify.cr/blob/v1.0.3/src/inotify.cr#L10" target="_blank">
+        inotify.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/64f665fc5d01260aee7ce8f91581946ebc9bfa34/src/inotify/settings.cr#L3" target="_blank">
-        inotify/settings.cr
-      </a>
-    
-    <br/>
-  
-    
-      <a href="https://github.com/petoem/inotify.cr/blob/64f665fc5d01260aee7ce8f91581946ebc9bfa34/src/inotify/event.cr#L1" target="_blank">
+      <a href="https://github.com/petoem/inotify.cr/blob/v1.0.3/src/inotify/event.cr#L1" target="_blank">
         inotify/event.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/64f665fc5d01260aee7ce8f91581946ebc9bfa34/src/inotify/watcher.cr#L1" target="_blank">
-        inotify/watcher.cr
+      <a href="https://github.com/petoem/inotify.cr/blob/v1.0.3/src/inotify/settings.cr#L3" target="_blank">
+        inotify/settings.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/petoem/inotify.cr/blob/64f665fc5d01260aee7ce8f91581946ebc9bfa34/src/inotify.cr#L10" target="_blank">
-        inotify.cr
+      <a href="https://github.com/petoem/inotify.cr/blob/v1.0.3/src/inotify/version.cr#L1" target="_blank">
+        inotify/version.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/petoem/inotify.cr/blob/v1.0.3/src/inotify/watcher.cr#L1" target="_blank">
+        inotify/watcher.cr
       </a>
     
     <br/>
@@ -169,8 +180,8 @@
       </dt>
       
     
-      <dt class="entry-const" id="LOG">
-        <strong>LOG</strong> = <code><span class="t">Logger</span>.<span class="k">new</span>(<span class="t">STDOUT</span>)</code>
+      <dt class="entry-const" id="Log">
+        <strong>Log</strong> = <code><span class="t">::</span><span class="t">Log</span>.<span class="k">for</span>(<span class="s">&quot;inotify&quot;</span>)</code>
       </dt>
       
     
@@ -233,7 +244,7 @@
     Class Method Detail
   </h2>
   
-    <div class="entry-detail" id="watch(path:String,recursive:Bool=false,&amp;block:Inotify::Event-&gt;):Inotify::Watcher-class-method">
+    <div class="entry-detail" id="watch(path:String,recursive:Bool=false,&block:Inotify::Event->):Inotify::Watcher-class-method">
       <div class="signature">
         
         def self.<strong>watch</strong>(path : String, recursive : Bool = <span class="n">false</span>, &block : <a href="Inotify/Event.html">Inotify::Event</a> -> ) : <a href="Inotify/Watcher.html">Inotify::Watcher</a>
@@ -249,7 +260,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/64f665fc5d01260aee7ce8f91581946ebc9bfa34/src/inotify.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/v1.0.3/src/inotify.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -270,7 +281,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/petoem/inotify.cr/blob/64f665fc5d01260aee7ce8f91581946ebc9bfa34/src/inotify.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/petoem/inotify.cr/blob/v1.0.3/src/inotify.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
