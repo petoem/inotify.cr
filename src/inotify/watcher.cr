@@ -51,11 +51,11 @@ module Inotify
           event_ptr = sub_slice.to_unsafe.as(LibInotify::Event*)
           # Read LibInotify::Event.name
           event_name = if event_ptr.value.len != 0
-                          slice_event_name = sub_slice[16, event_ptr.value.len]
-                          String.new(slice_event_name.to_unsafe.as(LibC::Char*))
-                        else
-                          nil
-                        end
+                         slice_event_name = sub_slice[16, event_ptr.value.len]
+                         String.new(slice_event_name.to_unsafe.as(LibC::Char*))
+                       else
+                         nil
+                       end
           # Handle edge case where watch descriptor is not known
           wl = @watch_list[event_ptr.value.wd]?
           # Build final event object
