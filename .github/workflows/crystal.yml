@@ -21,4 +21,4 @@ jobs:
     - name: Run tests
       run: crystal spec --verbose
     - name: Run linter
-      run: bin/ameba
+      run: bin/ameba src/ spec/
