@@ -14,7 +14,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   inotify:
     github: petoem/inotify.cr
-    version: 1.0.1
+    version: 1.1.0
 ```
 
 ## Usage
