@@ -36,44 +36,46 @@ module Inotify
     end
 
     private def lurk # ameba:disable Metrics/CyclomaticComplexity
-      pos = 0
       while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
         Log.debug { "waiting for event data" }
         bytes_read = @io.read(slice)
         raise Error.from_errno "inotify read() failed" if bytes_read == -1
         Log.debug { "received event data" }
-        if bytes_read > 0
-          while pos < bytes_read
-            sub_slice = slice + pos
-            event_ptr = sub_slice.to_unsafe.as(LibInotify::Event*)
-            # Read LibInotify::Event.name
-            event_name = if event_ptr.value.len != 0
-                           slice_event_name = sub_slice[16, event_ptr.value.len]
-                           String.new(slice_event_name.to_unsafe.as(LibC::Char*))
-                         else
-                           nil
-                         end
-            # Handle edge case where watch descriptor is not known
-            wl = @watch_list[event_ptr.value.wd]?
-            # Build final event object
-            event = Event.new(event_name,
-              wl.try &.path,
-              event_ptr.value.mask,
-              event_ptr.value.cookie,
-              event_ptr.value.wd)
 
-            # Watch new subdirectories (`event.name` can not be `nil` if `event.directory?`)
-            if (name = event.name) && (path = event.path) && event.directory? && event.type.create? && @recursive
-              watch File.join(path, name)
-            end
-            # Watch was removed
-            @watch_list.delete event_ptr.value.wd if event.type.ignored?
-            # Finally send out the event
-            @event_channel.send event
-            pos += 16 + event_ptr.value.len
+        next if bytes_read == 0
+
+        pos = 0
+        while pos < bytes_read
+          sub_slice = slice + pos
+          event_ptr = sub_slice.to_unsafe.as(LibInotify::Event*)
+          # Read LibInotify::Event.name
+          event_name = if event_ptr.value.len != 0
+                          slice_event_name = sub_slice[16, event_ptr.value.len]
+                          String.new(slice_event_name.to_unsafe.as(LibC::Char*))
+                        else
+                          nil
+                        end
+          # Handle edge case where watch descriptor is not known
+          wl = @watch_list[event_ptr.value.wd]?
+          # Build final event object
+          event = Event.new(event_name,
+            wl.try &.path,
+            event_ptr.value.mask,
+            event_ptr.value.cookie,
+            event_ptr.value.wd)
+
+          # Watch new subdirectories (`event.name` can not be `nil` if `event.directory?`)
+          if (name = event.name) && (path = event.path) && event.directory? && event.type.create? && @recursive
+            watch File.join(path, name)
           end
-          pos = 0
+          # Watch was removed
+          @watch_list.delete event_ptr.value.wd if event.type.ignored?
+          # Finally send out the event
+          @event_channel.send event
+          # Yield to allow event handler to process this event
+          Fiber.yield
+          pos += 16 + event_ptr.value.len
         end
       end
     rescue ex
