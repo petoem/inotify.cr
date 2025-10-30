@@ -39,8 +39,18 @@ module Inotify
       while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
         Log.debug { "waiting for event data" }
-        bytes_read = @io.read(slice)
-        raise Error.from_errno "inotify read() failed" if bytes_read == -1
+        # Use non-blocking read to avoid hanging
+        bytes_read = LibC.read(@io.fd, slice.to_unsafe, slice.size)
+
+        if bytes_read == -1
+          if Errno.value == Errno::EAGAIN || Errno.value == Errno::EWOULDBLOCK
+            # No data available, sleep briefly and try again
+            sleep 0.01.seconds
+            next
+          else
+            raise Error.from_errno "inotify read() failed"
+          end
+        end
         Log.debug { "received event data" }
 
         next if bytes_read == 0
