@@ -188,9 +188,9 @@ describe Inotify do
     describe "#close" do
       it "should properly close fd" do
         watcher = Inotify::Watcher.new
-        File.exists?("/proc/#{Process.pid}/fd/#{watcher.@io.fd}").should be_true
+        File.exists?("/proc/#{Process.pid}/fd/#{watcher.@fd}").should be_true
         watcher.close
-        File.exists?("/proc/#{Process.pid}/fd/#{watcher.@io.fd}").should be_false
+        File.exists?("/proc/#{Process.pid}/fd/#{watcher.@fd}").should be_false
       end
     end
   end
