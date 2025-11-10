@@ -23,11 +23,9 @@ module Inotify
     # Creates a new inotify instance and starts reading from the event queue.
     # Optional: Set *recursive* to `true` to automatically watch all new subdirectories.
     def initialize(@recursive : Bool = false)
-      fd = LibInotify.init LibC::O_NONBLOCK
-      raise Error.from_errno "inotify init failed" if fd == -1
+      @fd = LibInotify.init LibC::O_NONBLOCK
+      raise Error.from_errno "inotify init failed" if @fd == -1
       Log.debug { "inotify init" }
-      @io = IO::FileDescriptor.new fd
-      Log.debug { "inotify IO created" }
 
       @event_channel = Channel(Event).new
       @enabled = true
@@ -38,12 +36,19 @@ module Inotify
     private def lurk # ameba:disable Metrics/CyclomaticComplexity
       while @enabled
         slice = Slice(UInt8).new(LibInotify::BUF_LEN)
-        Log.debug { "waiting for event data" }
-        bytes_read = @io.read(slice)
-        raise Error.from_errno "inotify read() failed" if bytes_read == -1
-        Log.debug { "received event data" }
+        bytes_read = LibC.read(@fd, slice.to_unsafe, slice.size)
+
+        if bytes_read == -1
+          if Errno.value == Errno::EAGAIN || Errno.value == Errno::EWOULDBLOCK
+            sleep 0.025.seconds
+            next
+          else
+            raise Error.from_errno "inotify read() failed"
+          end
+        end
 
         next if bytes_read == 0
+        Log.debug { "received event data" }
 
         pos = 0
         while pos < bytes_read
@@ -113,7 +118,7 @@ module Inotify
     # Adds a new watch, or modifies an existing watch, for the *path* specified.
     # Optional: The events to be monitored can be specified in the *mask* bit-mask argument.
     def watch(path : String, mask = DEFAULT_WATCH_FLAG)
-      wd = LibInotify.add_watch(@io.fd, path, mask)
+      wd = LibInotify.add_watch(@fd, path, mask)
       raise Error.from_errno "inotify add_watch failed" if wd == -1
       Log.debug { "inotify add_watch #{wd} #{path}" }
       if is_dir = File.directory? path
@@ -139,7 +144,7 @@ module Inotify
     # Removes an item from an inotify watch list based on its watch descriptor *wd*.
     # Returns `true` on success, otherwise raises.
     def unwatch(wd : LibC::Int)
-      status = LibInotify.rm_watch(@io.fd, wd)
+      status = LibInotify.rm_watch(@fd, wd)
       if status == -1
         case Errno.value
         when Errno::EBADF  then raise IO::Error.new "fd is not a valid file descriptor"
@@ -160,7 +165,7 @@ module Inotify
     # Closes file descriptor referring to the inotify instance.
     def close
       @enabled = false
-      @io.close
+      raise Error.from_errno "close on fd failed" if LibC.close(@fd) == -1
       Log.debug { "file descriptor referring to inotify instance closed" }
     end
 
